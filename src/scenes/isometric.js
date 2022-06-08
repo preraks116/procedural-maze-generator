@@ -10,7 +10,8 @@ const sceneObjects = {
     cube: new Cube({
         position: { x: 0, y: 0, z: 0 },
         color: 0x00ff00,
-        dimension: { x: 1, y: 1, z: 1 }
+        dimension: { x: 1, y: 1, z: 1 },
+        speed: 0.05
     }, scene),
     plane: new Plane({
         scene: scene,

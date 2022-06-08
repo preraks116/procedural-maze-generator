@@ -10,19 +10,20 @@ const sceneObjects = {
     cube: new Cube({
         position: { x: 0, y: 0, z: 0 },
         color: 0x00ff00,
-        dimension: { x: 1, y: 1, z: 1 }
+        dimension: { x: 1, y: 1, z: 1 },
+        speed: 0.05
     }, scene),
     plane: new Plane({
         scene: scene,
         position: { x: 0, y: -0.5, z: 0 },
         color: 0xffff00,
-        dimension: { x: 10, y: 10 },
+        dimension: { x: 50, y: 50 },
         rotation: -Math.PI / 2
     }, scene)
 };
 
 const camera = new PerspCamera({
-    position: { x: 0, y: 2, z: 5 },
+    position: { x: 0, y: 4, z: 5 },
     lookAt: new Vector3(0, 0, 0),
     up: { x: 0, y: 1, z: 0 },
     aspect: window.innerWidth / window.innerHeight,

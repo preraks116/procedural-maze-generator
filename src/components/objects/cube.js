@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { keyDict } from '../../utils/keyControls';
 
 // Cube class
 class Cube {
@@ -7,6 +8,7 @@ class Cube {
         this.color = props.color;
         this.scene = scene;
         this.dimension = props.dimension;
+        this.speed = props.speed
     }
     render() {
         const geometry = new THREE.BoxGeometry(this.dimension.x, this.dimension.y, this.dimension.z);
@@ -16,9 +18,17 @@ class Cube {
         // this.scene.add(this.cube);
         this.scene.add(this.cube);
     }
-    rotate() {
-        this.cube.rotation.x += 0.01;
-        this.cube.rotation.y += 0.01;
+    update() {
+        // this.cube.translateZ(-0.05);
+        for(let key in keyDict)
+        {
+            if(keyDict[key].pressed)
+            {
+                this.cube.translateX(-1*this.speed*keyDict[key].x);
+                this.cube.translateZ(-1*this.speed*keyDict[key].z);
+            }
+        }
+        
     }
 }
 

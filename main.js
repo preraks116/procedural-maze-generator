@@ -2,13 +2,15 @@ import './style.css'
 
 import * as THREE from 'three';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";  
-
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { keyDict, setKey } from './src/utils/keyControls';
 import { sceneObjects, camera, scene } from './src/scenes/perspective';
 // import { sceneObjects, camera, scene } from './src/scenes/isometric';
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
+const player = sceneObjects['cube'];
+
 
 async function init() {
   camera.render();
@@ -16,7 +18,7 @@ async function init() {
   // normal way of adding perspective camera
 
   // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  
+
   // normal way of defining orthographic camera
 
   // let width = 10;
@@ -50,11 +52,14 @@ async function init() {
   // plane.render();
 
   // renders all objects in scene
-  for(let key in sceneObjects) { 
+  for (let key in sceneObjects) {
     sceneObjects[key].render();
   }
 
-  window.addEventListener('resize', onWindowResize, false);
+  // event listeners
+  window.addEventListener('keydown', (e) => setKey(e, true, camera, player));
+  window.addEventListener('resize', onWindowResize);
+  window.addEventListener( 'keyup', (e) => setKey(e, false, camera, player));
 }
 
 function animate() {
@@ -62,7 +67,7 @@ function animate() {
   renderer.render(scene, camera.camera);
   // renderer.render(scene, camera);
   // controls.update();
-  // cube.rotate();
+  player.update();
 }
 
 function onWindowResize() {
