@@ -9,7 +9,7 @@ const forward = new Vector3(0, 0, -1);
 
 class PerspCamera {
   constructor(props, scene) {
-    this.cameraVector = new Vector3(props.position.x, props.position.y , props.position.z);
+    this.cameraOffset = new Vector3(props.position.x, props.position.y , props.position.z);
     this.position = props.position;
     this.lookAt = props.lookAt;
     this.up = props.up;
@@ -26,14 +26,8 @@ class PerspCamera {
     this.camera.up = this.up;
     this.scene.add(this.camera);
   }
-  update(player) {
-    // get current player position  
-    // console.log(player.cube.position);
-    // let x = player.cube.position.clone();
-    // console.log(x.add(this.cameraVector));
-    // console.log(x.add(this.cameraVector))
-    // this.camera.position.sub(forward.clone().multiplyScalar(-1*player.speed));
-    // console.log(this.cameraVector.add(player.cube.position));
+  update(target) {
+    this.camera.position.copy(target.position).add(this.cameraOffset);
   }
 }
 

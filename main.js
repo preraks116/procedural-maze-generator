@@ -3,9 +3,10 @@ import './style.css'
 import * as THREE from 'three';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { keyDict, setKey } from './src/utils/keyControls';
-import { sceneObjects, camera, scene } from './src/scenes/perspective';
-// import { sceneObjects, camera, scene } from './src/scenes/isometric';
+import { setKey } from './src/utils/keyControls';
+
+// import { sceneObjects, camera, scene } from './src/scenes/perspective';
+import { sceneObjects, camera, scene } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
@@ -57,9 +58,9 @@ async function init() {
   }
 
   // event listeners
-  window.addEventListener('keydown', (e) => setKey(e, true, camera, player));
+  window.addEventListener('keydown', (e) => setKey(e, true));
   window.addEventListener('resize', onWindowResize);
-  window.addEventListener( 'keyup', (e) => setKey(e, false, camera, player));
+  window.addEventListener( 'keyup', (e) => setKey(e, false));
 }
 
 function animate() {
@@ -68,6 +69,7 @@ function animate() {
   // renderer.render(scene, camera);
   // controls.update();
   player.update();
+  camera.update(player.cube);
 }
 
 function onWindowResize() {

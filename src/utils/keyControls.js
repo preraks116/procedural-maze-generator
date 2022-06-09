@@ -23,12 +23,9 @@ const keyDict = {
     }
 }
 
-function setKey(e, val, camera, player) {
+function setKey(e, val) {
     if (keyDict[e.key]) {
         keyDict[e.key].pressed = val;
-    }
-    if (val) {
-        camera.update(player);
     }
 }
 

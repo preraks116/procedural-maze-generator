@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 
 // perspective camera class 
 // orbit controls dont work with this camera
 class OrthoCamera {
     constructor(props, scene) {
+        this.cameraOffset = new Vector3(props.position.x, props.position.y , props.position.z);
         this.position = props.position;
         this.lookAt = props.lookAt;
         this.up = props.up;
@@ -24,6 +26,9 @@ class OrthoCamera {
         this.camera.lookAt(this.lookAt);
         this.camera.up = this.up;
         this.scene.add(this.camera);
+    }
+    update(target) {
+        this.camera.position.copy(target.position).add(this.cameraOffset);
     }
 }
 
