@@ -6,8 +6,8 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { setKey } from './src/utils/keyControls';
 
-// import { sceneObjects, camera, scene, world } from './src/scenes/perspective';
-import { sceneObjects, camera, scene, world } from './src/scenes/isometric'; 
+import { sceneObjects, camera, scene, world } from './src/scenes/perspective';
+// import { sceneObjects, camera, scene, world } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;

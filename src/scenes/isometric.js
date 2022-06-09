@@ -46,6 +46,21 @@ const sceneObjects = {
   }, scene)
 };
 
+// const collisions = {
+//   cubePlane: new CANNON.ContactMaterial(
+//       sceneObjects['cube'].material,
+//       sceneObjects['plane'].material,
+//       {
+//           friction: 0
+//       }
+//   )
+// }
+
+// for (let key in collisions) {
+//   world.addContactMaterial(collisions[key]);
+// }
+
+// camera
 const camera = new OrthoCamera({
   position: { x: 20, y: 20, z: 20 },
   rotation: {

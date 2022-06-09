@@ -13,6 +13,7 @@ class Cube {
         this.world = world;
         this.mass = props.mass
         this.linearDamping = props.linearDamping
+        this.material = new CANNON.Material();
     }
     render() {
         // three js rendering
@@ -31,7 +32,8 @@ class Cube {
             mass: this.mass,
             position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
             shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, this.dimension.z / 2)),
-            linearDamping: this.linearDamping
+            linearDamping: this.linearDamping,
+            material: this.material
         });
         this.world.addBody(this.body);
     }

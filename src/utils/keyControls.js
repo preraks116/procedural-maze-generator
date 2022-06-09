@@ -1,5 +1,3 @@
-import { camera } from "../scenes/perspective";
-
 const keyDict = {
     "w": {
         "pressed": false,

@@ -24,7 +24,7 @@ const sceneObjects = {
     plane: new Plane({
         scene: scene,
         position: { x: 0, y: -0.5, z: 0 },
-        color: 0xffff00,
+        color: 0xffffff,
         dimension: { x: 50, y: 50 },
         rotation: {
             x: -Math.PI / 2,
@@ -32,10 +32,27 @@ const sceneObjects = {
             z: 0
         },
         mass: 0,
-        linearDamping: 0.3
+        linearDamping: 0.3,
     }, scene, world)
 };
 
+// const with all collision behaviors
+const collisions = {
+    cubePlane: new CANNON.ContactMaterial(
+        sceneObjects['cube'].material,
+        sceneObjects['plane'].material,
+        {
+            friction: 0
+        }
+    )
+}
+
+// adding collision behaviors to world
+// for (let key in collisions) {
+//     world.addContactMaterial(collisions[key]);
+// }
+
+// camera
 const camera = new PerspCamera({
     position: { x: 0, y: 4, z: 5 },
     lookAt: new Vector3(0, 0, 0),

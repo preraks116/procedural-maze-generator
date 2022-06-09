@@ -12,6 +12,7 @@ class Plane {
     this.world = world;
     this.mass = props.mass;
     this.linearDamping = props.linearDamping;
+    this.material = new CANNON.Material();
   }
   render() {
     // three js rendering
@@ -31,7 +32,8 @@ class Plane {
       mass: 0,
       position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
       shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, 0.1)),
-      linearDamping: this.linearDamping
+      linearDamping: this.linearDamping,
+      material: this.material
     });
     this.body.quaternion.setFromEuler(this.rotation.x, this.rotation.y, this.rotation.z);
     this.world.addBody(this.body);
