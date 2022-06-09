@@ -1,38 +1,26 @@
 import './style.css'
 
 import * as THREE from 'three';
+import * as CANNON from 'cannon';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { setKey } from './src/utils/keyControls';
 
-// import { sceneObjects, camera, scene } from './src/scenes/perspective';
-import { sceneObjects, camera, scene } from './src/scenes/isometric'; 
+// import { sceneObjects, camera, scene, world } from './src/scenes/perspective';
+import { sceneObjects, camera, scene, world } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
+// let world;
 const player = sceneObjects['cube'];
 
-
 async function init() {
-  camera.render();
-
-  // normal way of adding perspective camera
-
-  // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-  // normal way of defining orthographic camera
-
-  // let width = 10;
-  // let height = 10;
-  // camera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 1000);
-  // scene.add(camera);
-  // camera.position.z = 5;
-  // camera.position.y = 2;
-
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+
+  camera.render();
 
   // controls = new OrbitControls(camera, renderer.domElement);
   // controls.listenToKeyEvents(window); // optional
@@ -68,8 +56,12 @@ function animate() {
   renderer.render(scene, camera.camera);
   // renderer.render(scene, camera);
   // controls.update();
-  player.update();
-  camera.update(player.cube);
+  camera.update(player.body);
+  world.step(1 / 60);
+
+  for (let key in sceneObjects) {
+    sceneObjects[key].update();
+  }
 }
 
 function onWindowResize() {

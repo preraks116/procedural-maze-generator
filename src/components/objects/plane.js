@@ -1,24 +1,46 @@
 import * as THREE from 'three';
+import * as CANNON from 'cannon';
 
 // Plane class
 class Plane {
-    constructor(props, scene) {
-      this.position = props.position;
-      this.color = props.color;
-      this.scene = scene;
-      this.dimension = props.dimension;
-      this.rotation = props.rotation;
-    }
-    render() {
-      const geometry = new THREE.PlaneGeometry(this.dimension.x, this.dimension.y);
-      const material = new THREE.MeshPhongMaterial({ color: this.color, side: THREE.DoubleSide });
-      this.plane = new THREE.Mesh(geometry, material);
-      this.plane.position.x = this.position.x;
-      this.plane.position.y = this.position.y;
-      this.plane.position.z = this.position.z;
-      this.plane.rotation.x = this.rotation;
-      this.scene.add(this.plane);
-    }
+  constructor(props, scene, world) {
+    this.position = props.position;
+    this.color = props.color;
+    this.scene = scene;
+    this.dimension = props.dimension;
+    this.rotation = props.rotation;
+    this.world = world;
+    this.mass = props.mass;
+    this.linearDamping = props.linearDamping;
+  }
+  render() {
+    // three js rendering
+    const geometry = new THREE.PlaneGeometry(this.dimension.x, this.dimension.y);
+    const material = new THREE.MeshPhongMaterial({ color: this.color, side: THREE.DoubleSide });
+    this.mesh = new THREE.Mesh(geometry, material);
+    this.scene.add(this.mesh);
+    // rotation and position are not set in the threejs part but in cannon part
+    // and the threejs part copies cannon part in update
+
+    // this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+    // this.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
+    
+
+    // cannon js rendering
+    this.body = new CANNON.Body({
+      mass: 0,
+      position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
+      shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, 0.1)),
+      linearDamping: this.linearDamping
+    });
+    this.body.quaternion.setFromEuler(this.rotation.x, this.rotation.y, this.rotation.z);
+    this.world.addBody(this.body);
+  }
+  update() {
+    // threejs part copying cannon part
+    this.mesh.position.copy(this.body.position);
+    this.mesh.quaternion.copy(this.body.quaternion);
+  }
 }
 
 export { Plane };
