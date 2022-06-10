@@ -18,7 +18,8 @@ class Plane {
     // three js rendering
     const geometry = new THREE.PlaneGeometry(this.dimension.x, this.dimension.y);
     const material = new THREE.MeshPhongMaterial({ color: this.color, side: THREE.DoubleSide });
-    this.mesh = new THREE.Mesh(geometry, material);
+    this.mesh = new THREE.Mesh(geometry, material);  
+    this.mesh.receiveShadow = true;
     this.scene.add(this.mesh);
     // rotation and position are not set in the threejs part but in cannon part
     // and the threejs part copies cannon part in update

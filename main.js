@@ -11,17 +11,19 @@ import { sceneObjects, camera, scene, world } from './src/scenes/perspective';
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
-// let world;
 const player = sceneObjects['cube'];
 
 async function init() {
+  // initialization
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  // load camera
   camera.render();
 
+  // orbit controls
   // controls = new OrbitControls(camera, renderer.domElement);
   // controls.listenToKeyEvents(window); // optional
 
@@ -33,12 +35,9 @@ async function init() {
   const color = 0xFFFFFF;
   const intensity = 0.5;
   const light = new THREE.DirectionalLight(color, intensity);
+  light.castShadow = true;
   light.position.set(-1, 2, 4);
   scene.add(light);
-
-  // render objects
-  // cube.render();
-  // plane.render();
 
   // renders all objects in scene
   for (let key in sceneObjects) {

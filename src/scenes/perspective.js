@@ -20,6 +20,16 @@ const sceneObjects = {
         speed: 1,
         mass: 1,
         linearDamping: 0.3,
+        type: "player"
+    }, scene, world),
+    cube2: new Cube({
+        position: { x: 5, y: 0.5, z: 0 },
+        color: 0x00ff0,
+        dimension: { x: 1, y: 2, z: 2 },
+        speed: 1,
+        mass: 0,
+        linearDamping: 0.3,
+        type: "static"
     }, scene, world),
     plane: new Plane({
         scene: scene,
@@ -42,15 +52,16 @@ const collisions = {
         sceneObjects['cube'].material,
         sceneObjects['plane'].material,
         {
-            friction: 0
+            // friction: 0,
+            // restitution: 0.9
         }
     )
 }
 
 // adding collision behaviors to world
-// for (let key in collisions) {
-//     world.addContactMaterial(collisions[key]);
-// }
+for (let key in collisions) {
+    world.addContactMaterial(collisions[key]);
+}
 
 // camera
 const camera = new PerspCamera({

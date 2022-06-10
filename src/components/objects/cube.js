@@ -14,12 +14,15 @@ class Cube {
         this.mass = props.mass
         this.linearDamping = props.linearDamping
         this.material = new CANNON.Material();
+        this.type = props.type;
     }
     render() {
         // three js rendering
         const geometry = new THREE.BoxGeometry(this.dimension.x, this.dimension.y, this.dimension.z);
         const material = new THREE.MeshPhongMaterial({ color: this.color });
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.receiveShadow = true;
+        this.mesh.castShadow = true;
         this.scene.add(this.mesh);
         // rotation and position are not set in the threejs part but in cannon part
         // and the threejs part copies cannon part in update
@@ -38,9 +41,12 @@ class Cube {
         this.world.addBody(this.body);
     }
     update() {
-        for(let key in keyDict) {
-            if(keyDict[key].pressed) {
-                this.body.velocity.set(-1*this.speed*keyDict[key].x, -1*this.speed*keyDict[key].y, -1*this.speed*keyDict[key].z);
+        if(this.type === 'player') {
+            for(let key in keyDict) {
+                if(keyDict[key].pressed) {
+                    this.body.velocity.x = -1*this.speed*keyDict[key].x;
+                    this.body.velocity.z = -1*this.speed*keyDict[key].z;
+                }
             }
         }
         // threejs part copying cannon part
