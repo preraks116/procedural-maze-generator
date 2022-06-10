@@ -6,7 +6,7 @@ import { keyDict } from '../../utils/keyControls';
 class Cube {
     constructor(props, scene, world) {
         this.position = props.position;
-        this.color = props.color;
+        this.color = props.color ? props.color : 0xffffff;
         this.scene = scene;
         this.dimension = props.dimension;
         this.speed = props.speed
@@ -15,11 +15,12 @@ class Cube {
         this.linearDamping = props.linearDamping
         this.material = new CANNON.Material();
         this.type = props.type;
+        this.textures = props.textures;
     }
     render() {
         // three js rendering
         const geometry = new THREE.BoxGeometry(this.dimension.x, this.dimension.y, this.dimension.z);
-        const material = new THREE.MeshPhongMaterial({ color: this.color });
+        const material = this.textures ? new THREE.MeshPhongMaterial(this.textures): new THREE.MeshPhongMaterial({ color: this.color });
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.receiveShadow = true;
         this.mesh.castShadow = true;

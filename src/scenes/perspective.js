@@ -6,6 +6,7 @@ import { Plane } from "../components/objects/plane";
 import { PerspCamera } from "../components/camera/perspectiveCamera";
 import { ambientLight } from '../components/lights/ambientLight';
 import { directionalLight } from '../components/lights/directionalLight';
+import { textures } from '../utils/textures';
 
 const scene = new THREE.Scene();
 
@@ -22,7 +23,8 @@ const sceneObjects = {
         speed: 1,
         mass: 1,
         linearDamping: 0.3,
-        type: "player"
+        type: "player",
+        textures: textures.brick
     }, scene, world),
     cube2: new Cube({
         position: { x: 5, y: 0.5, z: 0 },

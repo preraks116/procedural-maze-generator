@@ -5,9 +5,10 @@ import * as CANNON from 'cannon';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { setKey } from './src/utils/keyControls';
+import { textures } from './src/utils/textures';
 
-// import { sceneObjects, lighting, camera, scene, world } from './src/scenes/perspective';
-import { sceneObjects, lighting, camera, scene, world } from './src/scenes/isometric'; 
+import { sceneObjects, lighting  , camera, scene, world } from './src/scenes/perspective';
+// import { sceneObjects, lighting, camera, scene, world } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
@@ -37,6 +38,14 @@ async function init() {
     sceneObjects[key].render();
   }
 
+  // for debugging
+  // const cube = new THREE.Mesh(
+  //   new THREE.BoxGeometry(3, 3, 3), 
+  //   new THREE.MeshStandardMaterial(textures.brick)
+  // );
+  // cube.position.set(3, 1.5, -3);
+  // scene.add(  cube );
+
   // event listeners
   window.addEventListener('keydown', (e) => setKey(e, true));
   window.addEventListener('resize', onWindowResize);
@@ -46,7 +55,6 @@ async function init() {
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera.camera);
-  // renderer.render(scene, camera);
   // controls.update();
   camera.update(player.body);
   world.step(1 / 60);
