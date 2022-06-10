@@ -17,7 +17,7 @@ const player = sceneObjects['cube'];
 async function init() {
   // initialization
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
@@ -25,7 +25,7 @@ async function init() {
   camera.render();
 
   // orbit controls
-  // controls = new OrbitControls(camera, renderer.domElement);
+  // controls = new OrbitControls(camera.camera, renderer.domElement);
   // controls.listenToKeyEvents(window); // optional
 
   // lighting
@@ -54,6 +54,11 @@ async function init() {
 
 function animate() {
   requestAnimationFrame(animate);
+  // setTimeout( function() {
+
+  //   requestAnimationFrame( animate );
+
+  // }, 1000 / 30 );
   renderer.render(scene, camera.camera);
   // controls.update();
   camera.update(player.body);
