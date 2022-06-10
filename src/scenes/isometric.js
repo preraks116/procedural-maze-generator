@@ -5,6 +5,8 @@ import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
 import { gridHelper } from '../components/objects/grid';
 import { OrthoCamera } from '../components/camera/orthographicCamera';
+import { ambientLight } from '../components/lights/ambientLight';
+import { directionalLight } from '../components/lights/directionalLight';
 
 const scene = new THREE.Scene();
 
@@ -21,6 +23,7 @@ const sceneObjects = {
     speed: 1,
     mass: 1,
     linearDamping: 0.3,
+    type: "player"
   }, scene, world),
   plane: new Plane({
     scene: scene,
@@ -46,6 +49,7 @@ const sceneObjects = {
   }, scene)
 };
 
+// const with all collision behaviors
 // const collisions = {
 //   cubePlane: new CANNON.ContactMaterial(
 //       sceneObjects['cube'].material,
@@ -59,6 +63,20 @@ const sceneObjects = {
 // for (let key in collisions) {
 //   world.addContactMaterial(collisions[key]);
 // }
+
+// lighting
+const lighting = {
+  ambientLight: new ambientLight({
+      color: 0xffffff,
+      intensity: 0.5
+  }, scene),
+  directionalLight: new directionalLight({
+      color: 0xffffff,
+      intensity: 0.5,
+      position: { x: -1, y: 2, z: 4 },
+      shadow: true
+  }, scene)
+}
 
 // camera
 const camera = new OrthoCamera({
@@ -77,4 +95,4 @@ const camera = new OrthoCamera({
   far: 1000
 }, scene)
 
-export { sceneObjects, camera, scene, world };
+export { sceneObjects, lighting, camera, scene, world };

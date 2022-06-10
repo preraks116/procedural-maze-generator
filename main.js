@@ -6,8 +6,8 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { setKey } from './src/utils/keyControls';
 
-import { sceneObjects, camera, scene, world } from './src/scenes/perspective';
-// import { sceneObjects, camera, scene, world } from './src/scenes/isometric'; 
+// import { sceneObjects, lighting, camera, scene, world } from './src/scenes/perspective';
+import { sceneObjects, lighting, camera, scene, world } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
@@ -27,17 +27,10 @@ async function init() {
   // controls = new OrbitControls(camera, renderer.domElement);
   // controls.listenToKeyEvents(window); // optional
 
-  // add ambient light
-  const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
-  scene.add(ambientLight);
-
-  // adding directional light
-  const color = 0xFFFFFF;
-  const intensity = 0.5;
-  const light = new THREE.DirectionalLight(color, intensity);
-  light.castShadow = true;
-  light.position.set(-1, 2, 4);
-  scene.add(light);
+  // lighting
+  for(let key in lighting) {
+    lighting[key].render();
+  }
 
   // renders all objects in scene
   for (let key in sceneObjects) {

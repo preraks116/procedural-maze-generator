@@ -4,6 +4,8 @@ import { Vector3 } from 'three';
 import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
 import { PerspCamera } from "../components/camera/perspectiveCamera";
+import { ambientLight } from '../components/lights/ambientLight';
+import { directionalLight } from '../components/lights/directionalLight';
 
 const scene = new THREE.Scene();
 
@@ -46,6 +48,19 @@ const sceneObjects = {
     }, scene, world)
 };
 
+const lighting = {
+    ambientLight: new ambientLight({
+        color: 0xffffff,
+        intensity: 0.5
+    }, scene),
+    directionalLight: new directionalLight({
+        color: 0xffffff,
+        intensity: 0.5,
+        position: { x: -1, y: 2, z: 4 },
+        shadow: true
+    }, scene)
+}
+
 // const with all collision behaviors
 const collisions = {
     cubePlane: new CANNON.ContactMaterial(
@@ -74,4 +89,4 @@ const camera = new PerspCamera({
     fov: 75
 }, scene);
 
-export { sceneObjects, camera, scene, world };
+export { sceneObjects, lighting, camera, scene, world };
