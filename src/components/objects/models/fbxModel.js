@@ -12,6 +12,7 @@ class FBXModel {
         this.world = world;
         this.mass = props.mass;
         this.linearDamping = props.linearDamping;
+        this.rotation = props.rotation;
         this.material = new CANNON.Material();
         this.isLoaded = false;
         this.resourceURL = props.resourceURL;
@@ -26,6 +27,7 @@ class FBXModel {
             this.model = fbx;
             // set the position and scale
             this.model.position.set(this.position.x, this.position.y, this.position.z);
+            this.model.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
             this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
             // add the model to the scene
             this.model.traverse(function (child) {
@@ -42,12 +44,13 @@ class FBXModel {
             // cannon js rendering
             this.body = new CANNON.Body({
                 mass: this.mass,
+                
                 position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
                 shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, this.dimension.z / 2)),
                 linearDamping: this.linearDamping,
                 material: this.material
             });
-            this.world.addBody(this.body);
+            // this.world.addBody(this.body);
         });
     }
     update() {

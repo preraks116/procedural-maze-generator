@@ -5,6 +5,7 @@ import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
 import { GLTFModel } from '../components/objects/models/gltfModel';
 import { FBXModel } from '../components/objects/models/fbxModel';
+import { Sprite } from '../components/objects/sprite';
 import { gridHelper } from '../components/objects/grid';
 import { OrthoCamera } from '../components/camera/orthographicCamera';
 import { ambientLight } from '../components/lights/ambientLight';
@@ -16,16 +17,15 @@ const scene = new THREE.Scene();
 const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0);
 world.broadphase = new CANNON.NaiveBroadphase();
-
 // dictionary of all objects
 const sceneObjects = {
   cube: new Cube({
     position: { x: 0, y: -0.4, z: 0 },
     color: 0x00ff00,
-    dimension: { x: 1, y: 1, z: 1 },
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
     speed: 1,
     mass: 1,
-    linearDamping: 0.5,
+    linearDamping: 0.9,
     type: "player",
     textures: textures.brick
   }, scene, world),
@@ -33,29 +33,37 @@ const sceneObjects = {
     scene: scene,
     position: { x: 0, y: -0.5, z: 0 },
     color: 0xffff00,
-    dimension: { x: 10, y: 10 },
+    dimension: { x: 20, y: 20 },
     rotation: { x: -Math.PI / 2, y: 0, z: 0 },
     mass: 0,
     linearDamping: 0.3
   }, scene, world),
   grid: new gridHelper({
     position: { x: 0, y: -0.5, z: 0 },
-    dimension: { x: 10, y: 10 },
+    dimension: { x: 20, y: 20 },
     rotation: { x: 0, y: 0, z: 0 }
   }, scene),
   boat: new GLTFModel({
-    position: { x: -3, y: 1, z: 1 },
+    position: { x: -5, y: 1, z: 1 },
     scale: { x: 0.3, y: 0.3, z: 0.3 },
     mass: 1,
     linearDamping: 0.5,
     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
   }, scene, world),
   fbxScene: new FBXModel({
-    position: { x: 1, y: -0.5, z: -1 },
-    scale: { x: 0.005, y: 0.005, z: 0.005 },
+    position: { x: 5, y: -0.5, z: -1 },
+    scale: { x: 0.01, y: 0.01, z: 0.01 },
     mass: 0,
+    rotation: { x: 0, y: -Math.PI/2, z: 0 },
     linearDamping: 0.5,
     resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+  }, scene, world),
+  sprite: new Sprite({
+    position: { x: -2, y: 0, z: -2 },
+    dimension: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: 0, z: 0 },
+    mass: 0,
+    resourceURL: './src/assets/sprites/cityTiles_075.png'
   }, scene, world),
 };
 
