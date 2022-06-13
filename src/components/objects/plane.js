@@ -30,7 +30,7 @@ class Plane {
 
     // cannon js rendering
     this.body = new CANNON.Body({
-      mass: 0,
+      mass: this.mass,
       position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
       shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, 0.01)),
       linearDamping: this.linearDamping,

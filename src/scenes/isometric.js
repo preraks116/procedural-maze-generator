@@ -3,7 +3,8 @@ import * as CANNON from 'cannon';
 import { Vector3 } from 'three';
 import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
-import { Model } from '../components/objects/model';
+import { GLTFModel } from '../components/objects/models/gltfModel';
+import { FBXModel } from '../components/objects/models/fbxModel';
 import { gridHelper } from '../components/objects/grid';
 import { OrthoCamera } from '../components/camera/orthographicCamera';
 import { ambientLight } from '../components/lights/ambientLight';
@@ -42,22 +43,30 @@ const sceneObjects = {
     dimension: { x: 10, y: 10 },
     rotation: { x: 0, y: 0, z: 0 }
   }, scene),
-  boat: new Model({
-    position: { x: 1, y: -0.5, z: 1 },
-    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+  boat: new GLTFModel({
+    position: { x: -3, y: 1, z: 1 },
+    scale: { x: 0.3, y: 0.3, z: 0.3 },
     mass: 1,
-    linearDamping: 0.5
-  }, scene, world)
+    linearDamping: 0.5,
+    resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
+  }, scene, world),
+  fbxScene: new FBXModel({
+    position: { x: 1, y: -0.5, z: -1 },
+    scale: { x: 0.005, y: 0.005, z: 0.005 },
+    mass: 0,
+    linearDamping: 0.5,
+    resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+  }, scene, world),
 };
 
 // const with all collision behaviors
 const collisions = {
   cubePlane: new CANNON.ContactMaterial(
-      sceneObjects['cube'].material,
-      sceneObjects['plane'].material,
-      {
-          friction: 0
-      }
+    sceneObjects['cube'].material,
+    sceneObjects['plane'].material,
+    {
+      friction: 0
+    }
   )
 }
 
@@ -68,14 +77,14 @@ for (let key in collisions) {
 // lighting
 const lighting = {
   ambientLight: new ambientLight({
-      color: 0xffffff,
-      intensity: 0.5
+    color: 0xffffff,
+    intensity: 0.5
   }, scene),
   directionalLight: new directionalLight({
-      color: 0xffffff,
-      intensity: 0.5,
-      position: { x: -1, y: 2, z: 4 },
-      shadow: true
+    color: 0xffffff,
+    intensity: 0.5,
+    position: { x: -1, y: 2, z: 4 },
+    shadow: true
   }, scene)
 }
 

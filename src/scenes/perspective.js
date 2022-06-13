@@ -3,6 +3,8 @@ import * as CANNON from 'cannon';
 import { Vector3 } from 'three';    
 import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
+import { GLTFModel } from '../components/objects/models/gltfModel';
+import { FBXModel } from '../components/objects/models/fbxModel';
 import { PerspCamera } from "../components/camera/perspectiveCamera";
 import { ambientLight } from '../components/lights/ambientLight';
 import { directionalLight } from '../components/lights/directionalLight';
@@ -26,15 +28,15 @@ const sceneObjects = {
         type: "player",
         textures: textures.brick
     }, scene, world),
-    cube2: new Cube({
-        position: { x: 5, y: 0.5, z: 0 },
-        color: 0x00ff0,
-        dimension: { x: 1, y: 2, z: 2 },
-        speed: 1,
-        mass: 0,
-        linearDamping: 0.3,
-        type: "static"
-    }, scene, world),
+    // cube2: new Cube({
+    //     position: { x: 5, y: 0.5, z: 0 },
+    //     color: 0x00ff0,
+    //     dimension: { x: 1, y: 2, z: 2 },
+    //     speed: 1,
+    //     mass: 0,
+    //     linearDamping: 0.3,
+    //     type: "static"
+    // }, scene, world),
     plane: new Plane({
         scene: scene,
         position: { x: 0, y: -0.5, z: 0 },
@@ -47,7 +49,21 @@ const sceneObjects = {
         },
         mass: 0,
         linearDamping: 0.3,
-    }, scene, world)
+    }, scene, world),
+    // boat: new GLTFModel({
+    //     position: { x: 1, y: 1, z: 1 },
+    //     scale: { x: 0.3, y: 0.3, z: 0.3 },
+    //     mass: 1,
+    //     linearDamping: 0.5,
+    //     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
+    // }, scene, world),
+    fbxScene: new FBXModel({
+        position: { x: 1, y: 1, z: 1 },
+        scale: { x: 0.005, y: 0.005, z: 0.005 },
+        mass: 1,
+        linearDamping: 0.5,
+        resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+    }, scene, world),
 };
 
 const lighting = {
