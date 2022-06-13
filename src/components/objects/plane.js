@@ -32,7 +32,7 @@ class Plane {
     this.body = new CANNON.Body({
       mass: 0,
       position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
-      shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, 0.1)),
+      shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, 0.01)),
       linearDamping: this.linearDamping,
       material: this.material
     });

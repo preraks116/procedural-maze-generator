@@ -20,7 +20,7 @@ class Cube {
     render() {
         // three js rendering
         const geometry = new THREE.BoxGeometry(this.dimension.x, this.dimension.y, this.dimension.z);
-        const material = this.textures ? new THREE.MeshPhongMaterial(this.textures): new THREE.MeshPhongMaterial({ color: this.color });
+        const material = this.textures ? new THREE.MeshStandardMaterial(this.textures): new THREE.MeshPhongMaterial({ color: this.color });
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.receiveShadow = true;
         this.mesh.castShadow = true;
