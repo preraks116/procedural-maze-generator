@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
+import CannonDebugger from 'cannon-es-debugger'
 import { Vector3 } from 'three';    
 import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
@@ -15,6 +16,17 @@ const scene = new THREE.Scene();
 const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0);
 world.broadphase = new CANNON.NaiveBroadphase();
+
+const cannonDebugger = new CannonDebugger(scene, world, {
+    onInit(body, mesh) {
+      // Toggle visibiliy on "d" press
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'i') {
+          mesh.visible = !mesh.visible
+        }
+      })
+    },
+  })
 
 // dictionary of all objects
 const sceneObjects = {
@@ -57,13 +69,14 @@ const sceneObjects = {
     //     linearDamping: 0.5,
     //     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
     // }, scene, world),
-    fbxScene: new FBXModel({
-        position: { x: 1, y: 1, z: 1 },
-        scale: { x: 0.005, y: 0.005, z: 0.005 },
-        mass: 1,
-        linearDamping: 0.5,
-        resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
-    }, scene, world),
+    // fbxScene: new FBXModel({
+    //     position: { x: 1, y: 1, z: 1 },
+    //     scale: { x: 0.005, y: 0.005, z: 0.005 },
+    //     rotation: { x: 0, y: -Math.PI/2, z: 0 },    
+    //     mass: 1,
+    //     linearDamping: 0.5,
+    //     resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+    // }, scene, world),
 };
 
 const lighting = {
@@ -107,4 +120,4 @@ const camera = new PerspCamera({
     fov: 75
 }, scene);
 
-export { sceneObjects, lighting, camera, scene, world };
+export { sceneObjects, lighting, camera, scene, world, cannonDebugger };

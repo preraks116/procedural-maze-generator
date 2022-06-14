@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
 
 class Sprite {
     constructor(props, scene, world) {
@@ -16,8 +16,8 @@ class Sprite {
         // three js rendering
         const map = new THREE.TextureLoader().load(this.resourceURL);
         const material = new THREE.SpriteMaterial({ map: map });
-
         this.sprite = new THREE.Sprite(material);
+        this.sprite.scale.set(this.dimension.x, this.dimension.y, 1);
         this.scene.add(this.sprite);
 
         // rotation and position are not set in the threejs part but in cannon part
@@ -35,7 +35,7 @@ class Sprite {
             material: this.material
         });
         this.body.quaternion.setFromEuler(this.rotation.x, this.rotation.y, this.rotation.z);
-        this.world.addBody(this.body);
+        // this.world.addBody(this.body);
     }
     update() {
         // threejs part copying cannon part

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import * as CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
+import CannonDebugger from 'cannon-es-debugger'
 import { Vector3 } from 'three';
 import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
@@ -17,6 +18,18 @@ const scene = new THREE.Scene();
 const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0);
 world.broadphase = new CANNON.NaiveBroadphase();
+
+const cannonDebugger = new CannonDebugger(scene, world, {
+  onInit(body, mesh) {
+    // Toggle visibiliy on "d" press
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'i') {
+        mesh.visible = !mesh.visible
+      }
+    })
+  },
+})
+
 // dictionary of all objects
 const sceneObjects = {
   cube: new Cube({
@@ -54,7 +67,7 @@ const sceneObjects = {
     position: { x: 5, y: -0.5, z: -1 },
     scale: { x: 0.01, y: 0.01, z: 0.01 },
     mass: 0,
-    rotation: { x: 0, y: -Math.PI/2, z: 0 },
+    rotation: { x: 0, y: -Math.PI / 2, z: 0 },
     linearDamping: 0.5,
     resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
   }, scene, world),
@@ -113,4 +126,4 @@ const camera = new OrthoCamera({
   far: 1000
 }, scene)
 
-export { sceneObjects, lighting, camera, scene, world };
+export { sceneObjects, lighting, camera, scene, world, cannonDebugger };
