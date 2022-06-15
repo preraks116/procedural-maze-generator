@@ -33,7 +33,7 @@ const cannonDebugger = new CannonDebugger(scene, world, {
 // dictionary of all objects
 const sceneObjects = {
   cube: new Cube({
-    position: { x: 0, y: -0.4, z: 0 },
+    position: { x: -3, y: -0.4, z: 0 },
     color: 0x00ff00,
     dimension: { x: 0.3, y: 0.3, z: 0.3 },
     speed: 1,
@@ -63,17 +63,17 @@ const sceneObjects = {
     linearDamping: 0.5,
     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
   }, scene, world),
-  fbxScene: new FBXModel({
-    position: { x: 5, y: -0.5, z: -1 },
-    scale: { x: 0.01, y: 0.01, z: 0.01 },
-    mass: 0,
-    rotation: { x: 0, y: -Math.PI / 2, z: 0 },
-    linearDamping: 0.5,
-    resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
-  }, scene, world),
+  // fbxScene: new FBXModel({
+  //   position: { x: 5, y: -0.5, z: -1 },
+  //   scale: { x: 0.01, y: 0.01, z: 0.01 },
+  //   mass: 0,
+  //   rotation: { x: 0, y: 0, z: 0 },
+  //   linearDamping: 0.5,
+  //   resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+  // }, scene, world),
   sprite: new Sprite({
     position: { x: -2, y: 0, z: -2 },
-    dimension: { x: 1, y: 1, z: 1 },
+    // dimension: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: 0, z: 0 },
     mass: 0,
     resourceURL: './src/assets/sprites/cityTiles_075.png'

@@ -7,26 +7,12 @@ import { setKey } from './src/utils/keyControls';
 // import CannonDebugger from 'cannon-es-debugger'
 
 
-import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
-// import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
+// import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
+import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
 
 const renderer = new THREE.WebGLRenderer();
 let controls;
 const player = sceneObjects['cube'];
-// let cannonDebugger;
-
-// function initCannonDebugger() {
-//   cannonDebugger = new CannonDebugger(scene, world, {
-//     onInit(body, mesh) {
-//       // Toggle visibiliy on "d" press
-//       document.addEventListener('keydown', (event) => {
-//         if (event.key === 'i') {
-//           mesh.visible = !mesh.visible
-//         }
-//       })
-//     },
-//   })
-// }
 
 async function init() {
   // initialization

@@ -35,10 +35,18 @@ class Cube {
         this.body = new CANNON.Body({
             mass: this.mass,
             position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
-            shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, this.dimension.z / 2)),
             linearDamping: this.linearDamping,
             material: this.material
         });
+        // get dimensions of mesh
+        const box = new THREE.Box3().setFromObject(this.mesh);
+        // console.log(box);
+        this.body.addShape(new CANNON.Box(new CANNON.Vec3(
+            (box.max.x - box.min.x)/2, 
+            (box.max.y - box.min.y)/2, 
+            (box.max.z - box.min.z)/2
+        )));
+        // this.body.addShape(new CANNON.Sphere(this.dimension.x), new CANNON.Vec3(0, 1, 0));
         this.world.addBody(this.body);
     }
     update() {
