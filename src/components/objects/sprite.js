@@ -28,9 +28,9 @@ class Sprite {
         this.box = new THREE.Box3().setFromObject(this.sprite);
         // subtract the max and min of the box to get the half dimensions
         this.dimension = new CANNON.Vec3(
-            0.35,
-            0.35,
-            0.35
+            0.45,
+            0.45,
+            0.45
         );
 
         // cannon js rendering

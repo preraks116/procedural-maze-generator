@@ -1,8 +1,43 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { CannonUtils } from '../../../utils/cannonUtils';
+import { threeToCannon, ShapeType } from 'three-to-cannon';
 
 const fbxLoader = new FBXLoader();
+
+// recursive function that traverses through this.model and enables shadows for all meshes, and for groups, it calls itself
+function enableShadows(object) {
+    for( let i = 0; i < object.children.length; i++ ) {
+        let child = object.children[i];
+        if(child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+        else {
+            enableShadows(child);
+        }
+    }
+}
+
+// recursive function to add shapes to the body 
+function addShapes(object, body) {
+    // for( let i = 0; i < object.children.length; i++ ) {
+        let child = object.children[1];
+        if(child.isMesh) {
+            let result = threeToCannon(child, {type : ShapeType.HULL});
+            let { shape, offset, quaterniion } = result;
+            console.log(result);
+            console.log(offset)
+            console.log(shape);
+            // offset.y = 5;
+            body.addShape(shape, offset, quaterniion);
+        }
+        else {
+            addShapes(child, body);
+        }
+    // }
+}
 
 class FBXModel {
     constructor(props, scene, world) {
@@ -29,45 +64,27 @@ class FBXModel {
             this.model.position.set(this.position.x, this.position.y, this.position.z);
             this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
             // add the model to the scene
+            // console.log(this.model);
+            this.model.receiveShadow = true;
+            this.model.castShadow = true;
 
             this.body = new CANNON.Body({
                 mass: this.mass,
                 position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
                 linearDamping: this.linearDamping,
                 material: this.material
-            });            
+            });        
 
-            let boxlist = [];
-            this.model.traverse(function (child) {
-                let box = new THREE.Box3().setFromObject(child);
-                    boxlist.push(new CANNON.Box(new CANNON.Vec3(
-                        (box.max.x - box.min.x)/2,
-                        (box.max.y - box.min.y)/2,
-                        (box.max.z - box.min.z)/2
-                    )));
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            // console.log(boxlist)
-            for(let i = 0; i < boxlist.length; i++) {
-                this.body.addShape(boxlist[i]);
-            }
+            this.modelMesh = this.model.children;
+            this.model.position.set(this.position.x, this.position.y, this.position.z);
+            this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
+            addShapes(this.model, this.body);   
+            // const result = threeToCannon(this.model, {type: ShapeType.HULL});
+            // const { shape, offset, quaterniion } = result;
+            // this.body.addShape(shape, offset, quaterniion);
+
+            enableShadows(this.model);
             this.scene.add(this.model);
-            // // preprocessing to get the model's bounding box
-            // const box = new THREE.Box3().setFromObject(this.model);
-            // // subtract max and min vectors
-            // this.dimension = new THREE.Vector3().subVectors(box.max, box.min);
-            // // cannon js rendering
-            // this.body = new CANNON.Body({
-            //     mass: this.mass,
-                
-            //     position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
-            //     shape: new CANNON.Box(new CANNON.Vec3(this.dimension.x / 2, this.dimension.y / 2, this.dimension.z / 2)),
-            //     linearDamping: this.linearDamping,
-            //     material: this.material
-            // });
             this.body.quaternion.setFromEuler(this.rotation.x, this.rotation.y, this.rotation.z);
             this.world.addBody(this.body);
         });

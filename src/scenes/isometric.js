@@ -6,6 +6,7 @@ import { Cube } from "../components/objects/cube";
 import { Plane } from "../components/objects/plane";
 import { GLTFModel } from '../components/objects/models/gltfModel';
 import { FBXModel } from '../components/objects/models/fbxModel';
+import { OBJModel } from '../components/objects/models/objModel';
 import { Sprite } from '../components/objects/sprite';
 import { gridHelper } from '../components/objects/grid';
 import { OrthoCamera } from '../components/camera/orthographicCamera';
@@ -36,7 +37,7 @@ const sceneObjects = {
     position: { x: -3, y: -0.4, z: 0 },
     color: 0x00ff00,
     dimension: { x: 0.3, y: 0.3, z: 0.3 },
-    speed: 1,
+    speed: 3,
     mass: 1,
     linearDamping: 0.9,
     type: "player",
@@ -46,7 +47,7 @@ const sceneObjects = {
     scene: scene,
     position: { x: 0, y: -0.5, z: 0 },
     color: 0xffff00,
-    dimension: { x: 20, y: 20 },
+    dimension: { x: 100, y: 100 },
     rotation: { x: -Math.PI / 2, y: 0, z: 0 },
     mass: 0,
     linearDamping: 0.3
@@ -58,25 +59,35 @@ const sceneObjects = {
   }, scene),
   boat: new GLTFModel({
     position: { x: -5, y: 1, z: 1 },
-    scale: { x: 0.3, y: 0.3, z: 0.3 },
+    scale: { x: 1, y: 1, z: 1 },
     mass: 1,
+    rotation: { x: 0, y: 0, z: 0 },
     linearDamping: 0.5,
     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
   }, scene, world),
-  // fbxScene: new FBXModel({
-  //   position: { x: 5, y: -0.5, z: -1 },
-  //   scale: { x: 0.01, y: 0.01, z: 0.01 },
-  //   mass: 0,
-  //   rotation: { x: 0, y: 0, z: 0 },
-  //   linearDamping: 0.5,
-  //   resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
-  // }, scene, world),
-  sprite: new Sprite({
-    position: { x: -2, y: 0, z: -2 },
-    // dimension: { x: 1, y: 1, z: 1 },
-    rotation: { x: 0, y: 0, z: 0 },
+  fbxScene: new FBXModel({
+    position: { x: 7, y: -0.5, z: -5 },
+    scale: { x: 0.01, y: 0.01, z: 0.01 },
     mass: 0,
-    resourceURL: './src/assets/sprites/cityTiles_075.png'
+    rotation: { x: 0, y: 0, z: 0 },
+    linearDamping: 0.5,
+    resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
+  }, scene, world),
+  // sprite: new Sprite({
+  //   position: { x: -2, y: 0, z: -2 },
+  //   // dimension: { x: 1, y: 1, z: 1 },
+  //   rotation: { x: 0, y: 0, z: 0 },
+  //   mass: 0,
+  //   resourceURL: './src/assets/sprites/cityTiles_075.png'
+  // }, scene, world),
+  monkey: new OBJModel({
+    position: { x: 0, y: 1, z: 0 },
+    // scale: { x: 0.5, y: 0.5, z: 0.5 },
+    scale: { x: 1, y: 1, z: 1 },
+    mass: 1,
+    rotation: { x: 0, y: 0, z: 0 },
+    linearDamping: 0.5,
+    resourceURL: 'src/assets/models/obj/monkey.obj'
   }, scene, world),
 };
 
@@ -104,7 +115,7 @@ const lighting = {
   directionalLight: new directionalLight({
     color: 0xffffff,
     intensity: 0.5,
-    position: { x: -1, y: 2, z: 4 },
+    position: { x: -1, y: 3, z: 4 },
     shadow: true
   }, scene)
 }

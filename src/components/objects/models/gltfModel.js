@@ -1,15 +1,45 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { CannonUtils } from '../../../utils/cannonUtils';
+import { threeToCannon, ShapeType } from 'three-to-cannon';
 
 const gltfLoader = new GLTFLoader();
 
 // dimension in model is Vec3
 
+function enableShadows(object) {
+  for (let i = 0; i < object.children.length; i++) {
+    let child = object.children[i];
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+    else {
+      enableShadows(child);
+    }
+  }
+}
+
+function addShapes(object, body) {
+  for (let i = 0; i < object.children.length; i++) {
+    let child = object.children[i];
+    if (child.isMesh) {
+      let shape = CannonUtils.CreateTrimesh(child.geometry);
+      body.addShape(shape);
+    }
+    else {
+      addShapes(child, body);
+    }
+  }
+}
+
+
 class GLTFModel {
   constructor(props, scene, world) {
     this.position = props.position;
     this.scale = props.scale;
+    this.rotation = props.rotation;
     this.scene = scene;
     this.world = world;
     this.mass = props.mass;
@@ -40,24 +70,15 @@ class GLTFModel {
         linearDamping: this.linearDamping,
         material: this.material
       });
-      
-      let boxlist = [];
-      this.model.traverse(function (child) {
-        let box = new THREE.Box3().setFromObject(child);
-        boxlist.push(new CANNON.Box(new CANNON.Vec3(
-          (box.max.x - box.min.x)/2,
-          (box.max.y - box.min.y)/2,
-          (box.max.z - box.min.z)/2
-        )));
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-      // console.log(boxlist)
-      for(let i = 0; i < boxlist.length; i++) {
-        this.body.addShape(boxlist[i]);
-      }
+
+      enableShadows(this.model);
+      console.log(this.model);
+      // addShapes(this.model, this.body);
+      const result = threeToCannon(this.model, {type: ShapeType.HULL});
+      const { shape, offset, quaterniion } = result;
+      this.body.addShape(shape, offset, quaterniion);
+
+
       this.scene.add(this.model);
 
       // preprocessing to get the model's bounding box
@@ -73,6 +94,7 @@ class GLTFModel {
       //   linearDamping: this.linearDamping,
       //   material: this.material
       // });
+      this.body.quaternion.setFromEuler(this.rotation.x, this.rotation.y, this.rotation.z);
       this.world.addBody(this.body);
     });
   }
