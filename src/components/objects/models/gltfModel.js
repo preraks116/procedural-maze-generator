@@ -72,11 +72,11 @@ class GLTFModel {
       });
 
       enableShadows(this.model);
-      console.log(this.model);
-      // addShapes(this.model, this.body);
-      const result = threeToCannon(this.model, {type: ShapeType.HULL});
-      const { shape, offset, quaterniion } = result;
-      this.body.addShape(shape, offset, quaterniion);
+      // console.log(this.model);
+      addShapes(this.model, this.body);
+      // const result = threeToCannon(this.model, {type: ShapeType.HULL});
+      // const { shape, offset, quaterniion } = result;
+      // this.body.addShape(shape, offset, quaterniion);
 
 
       this.scene.add(this.model);

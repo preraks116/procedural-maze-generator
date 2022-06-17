@@ -22,21 +22,22 @@ function enableShadows(object) {
 
 // recursive function to add shapes to the body 
 function addShapes(object, body) {
-    // for( let i = 0; i < object.children.length; i++ ) {
+    for( let i = 0; i < object.children.length; i++ ) {
         let child = object.children[1];
         if(child.isMesh) {
+            // console.log(child);
             let result = threeToCannon(child, {type : ShapeType.HULL});
             let { shape, offset, quaterniion } = result;
-            console.log(result);
-            console.log(offset)
-            console.log(shape);
+            // console.log(result);
+            // console.log(offset)
+            // console.log(shape);
             // offset.y = 5;
-            body.addShape(shape, offset, quaterniion);
+            // body.addShape(shape, offset, quaterniion);
         }
         else {
             addShapes(child, body);
         }
-    // }
+    }
 }
 
 class FBXModel {

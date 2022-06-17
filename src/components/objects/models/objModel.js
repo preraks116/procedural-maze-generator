@@ -8,18 +8,37 @@ const objLoader = new OBJLoader();
 
 // recursive function that traverses through this.model and enables shadows for all meshes, and for groups, it calls itself
 function enableShadows(object) {
-    let child = object.children[0];
-    child.castShadow = true;
-    child.receiveShadow = true;
+    for( let i = 0; i < object.children.length; i++ ) {
+        let child = object.children[i];
+        if(child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+        else {
+            enableShadows(child);
+        }
+    }
 }
 
 // recursive function to add shapes to the body 
 function addShapes(object, body) {
-    let child = object.children[0];
-    let shape = CannonUtils.CreateTrimesh(child.geometry);
-    // shape.setScale(0.5, 0.5, 0.5);
-    // shape.scale = new CANNON.Vec3(0.71, 0.71, 0.71);
-    body.addShape(shape); 
+    for (let i = 0; i < object.children.length; i++) {
+        let child = object.children[i];
+        if (child.isMesh) {
+            // console.log(child);
+            let result = threeToCannon(child, { type: ShapeType.HULL });
+            let { shape, offset, quaterniion } = result;
+            shape.scale = new CANNON.Vec3(0.05, 0.05, 0.05);   
+            // console.log(result);
+            // console.log(offset)
+            // console.log(shape);
+            // offset.y = 5;
+            // body.addShape(shape, offset, quaterniion);
+        }
+        else {
+            addShapes(child, body);
+        }
+    }
 }
 
 class OBJModel {
@@ -57,12 +76,15 @@ class OBJModel {
                 linearDamping: this.linearDamping,
                 material: this.material
             });
-            
+
             enableShadows(this.model);
-            // addShapes(this.model, this.body);
-            const result = threeToCannon(this.model, {type: ShapeType.HULL});
-            const { shape, offset, quaterniion } = result;
-            this.body.addShape(shape, offset, quaterniion);
+            console.log(this.model);
+            addShapes(this.model, this.body);
+            // const result = threeToCannon(this.model, {type: ShapeType.HULL});
+            // const result = threeToCannon(this.model, {type: ShapeType.HULL});
+            // console.log(result);
+            // const { shape, offset, quaterniion } = result;
+            // this.body.addShape(shape, offset, quaterniion); 
 
 
             this.scene.add(this.model);
@@ -73,8 +95,8 @@ class OBJModel {
     }
     update() {
         if (this.isLoaded) {
-          this.model.position.copy(this.body.position);
-          this.model.quaternion.copy(this.body.quaternion);
+            this.model.position.copy(this.body.position);
+            this.model.quaternion.copy(this.body.quaternion);
         }
     }
 }
