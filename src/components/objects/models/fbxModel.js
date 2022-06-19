@@ -28,15 +28,31 @@ function addShapes(object, body) {
             // console.log(child);
             let result = threeToCannon(child, {type : ShapeType.HULL});
             let { shape, offset, quaterniion } = result;
-            // console.log(result);
+            console.log(result);
             // console.log(offset)
             // console.log(shape);
             // offset.y = 5;
-            // body.addShape(shape, offset, quaterniion);
+            body.addShape(shape, offset, quaterniion);
         }
         else {
             addShapes(child, body);
         }
+    }
+}
+
+function addColliders(colliders, body) {
+    for(let key in colliders) {
+        let collider = colliders[key];
+        let shape = new CANNON.Box(new CANNON.Vec3(collider.dimension.x/2, collider.dimension.y/2, collider.dimension.z/2));
+        // position defined in ORC
+        let offset = new CANNON.Vec3(collider.position.x, collider.position.y, collider.position.z);
+        let orientation = new CANNON.Quaternion(0,0,0,1);
+        // orientation.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI/2);
+        collider.rotation = collider.rotation ? collider.rotation : {x: 0, y: 0, z: 0};
+        orientation.setFromEuler(collider.rotation.x, collider.rotation.y, collider.rotation.z);    
+        body.addShape(shape, offset, orientation);
+        console.log(body.quaternion)
+
     }
 }
 
@@ -51,6 +67,7 @@ class FBXModel {
         this.rotation = props.rotation;
         this.material = new CANNON.Material();
         this.isLoaded = false;
+        this.colliders = props.colliders;
         this.resourceURL = props.resourceURL;
     }
     render() {
@@ -76,10 +93,9 @@ class FBXModel {
                 material: this.material
             });        
 
-            this.modelMesh = this.model.children;
-            this.model.position.set(this.position.x, this.position.y, this.position.z);
-            this.model.scale.set(this.scale.x, this.scale.y, this.scale.z);
-            addShapes(this.model, this.body);   
+            addColliders(this.colliders, this.body);
+
+            // addShapes(this.model, this.body);   
             // const result = threeToCannon(this.model, {type: ShapeType.HULL});
             // const { shape, offset, quaterniion } = result;
             // this.body.addShape(shape, offset, quaterniion);
