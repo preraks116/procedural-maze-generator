@@ -51,7 +51,7 @@ function addColliders(colliders, body) {
         collider.rotation = collider.rotation ? collider.rotation : {x: 0, y: 0, z: 0};
         orientation.setFromEuler(collider.rotation.x, collider.rotation.y, collider.rotation.z);    
         body.addShape(shape, offset, orientation);
-        console.log(body.quaternion)
+        // console.log(body.quaternion)
 
     }
 }

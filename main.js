@@ -4,6 +4,7 @@
   import * as CANNON from 'cannon-es';
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
   import { setKey } from './src/utils/keyControls';
+  import { setZoom } from './src/components/camera/orthographicCamera';
   // import CannonDebugger from 'cannon-es-debugger'
 
 
@@ -47,6 +48,7 @@
     // scene.add(  cube );
 
     // event listeners
+    window.addEventListener('wheel', (e) => setZoom(e,camera));
     window.addEventListener('keydown', (e) => setKey(e, true));
     window.addEventListener('resize', onWindowResize);
     window.addEventListener( 'keyup', (e) => setKey(e, false));

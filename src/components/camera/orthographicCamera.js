@@ -3,6 +3,21 @@ import { Vector3 } from 'three';
 
 // perspective camera class 
 // orbit controls dont work with this camera
+
+// function that increments camera zoom 
+function setZoom(e, camera) {
+    if(camera.camera.zoom <= 16 && camera.camera.zoom >= 0.4) {
+        camera.camera.zoom -= e.deltaY * 0.01;
+        console.log(camera.camera.zoom);
+    }
+    if(camera.camera.zoom < 0.4) {
+        camera.camera.zoom = 0.4;
+    }
+    if(camera.camera.zoom > 16) {
+        camera.camera.zoom = 16;
+    }
+}
+
 class OrthoCamera {
     constructor(props, scene) {
         this.cameraOffset = new Vector3(props.position.x, props.position.y , props.position.z);
@@ -24,12 +39,15 @@ class OrthoCamera {
         this.camera.rotation.y = this.rotation.y;
         this.camera.rotation.x = this.rotation.x;
         this.camera.lookAt(this.lookAt);
+        this.camera.zoom = 1;
+        this.camera.updateProjectionMatrix();
         this.camera.up = this.up;
         this.scene.add(this.camera);
     }
     update(target) {
         this.camera.position.copy(target.position).add(this.cameraOffset);
+        this.camera.updateProjectionMatrix();
     }
 }
 
-export { OrthoCamera };
+export { OrthoCamera, setZoom };
