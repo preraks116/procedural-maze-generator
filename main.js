@@ -11,13 +11,16 @@
   // import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
   import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
 
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
   let controls;
   const player = sceneObjects['cube'];
 
   async function init() {
     // initialization
     renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    // renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
