@@ -3,6 +3,8 @@
   import * as THREE from 'three';
   import * as CANNON from 'cannon-es';
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+  import Stats from 'three/examples/jsm/libs/stats.module.js';
+  import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
   import { setKey } from './src/utils/keyControls';
   import { setZoom } from './src/components/camera/orthographicCamera';
   // import CannonDebugger from 'cannon-es-debugger'
@@ -12,7 +14,7 @@
   import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
 
   const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-  let controls;
+  let controls, stats;
   const player = sceneObjects['cube'];
 
   async function init() {
@@ -42,6 +44,82 @@
       sceneObjects[key].render();
     }
 
+    stats = new Stats();
+    // add custom panel
+    // add memory panel
+    // stats.addPanel(new Stats.Panel('Memory', '#ff8', '#221'));
+    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3: mem, 4: calls, 5: raf, 6: all
+    document.body.appendChild(stats.dom);
+
+    // lighting.ambientLight.intensity = 1;
+    // add gui
+    const gui = new GUI();
+    const lightingFolder = gui.addFolder('Lighting');
+    const directionalLightFolder = lightingFolder.addFolder('Directional Light');
+    const directionalLightPositionFolder = directionalLightFolder.addFolder('Position');
+    const ambientLightFolder = lightingFolder.addFolder('Ambient Light');
+    const propsAmbientLight = {
+      get 'Intensity'() {
+        return lighting.ambientLight.light.intensity;
+      },
+      set 'Intensity'(value) {
+        lighting.ambientLight.light.intensity = value;
+      },
+      get 'Color'() {
+        return lighting.ambientLight.light.color.getHex();
+      },
+      set 'Color'(value) {
+        lighting.ambientLight.light.color.setHex(value);
+      }
+    }
+    const propsDirectionalLight = {
+      get 'Intensity'() {
+        return lighting.directionalLight.light.intensity;
+      },
+      set 'Intensity'(value) {
+        lighting.directionalLight.light.intensity = value;
+      },
+      get 'Color'() {
+        return lighting.directionalLight.light.color.getHex();
+      },
+      set 'Color'(value) {
+        lighting.directionalLight.light.color.setHex(value);
+      }
+    }
+    const propsDirectionalLightPosition = {
+      get 'X'() {
+        return lighting.directionalLight.light.position.x;
+      },
+      set 'X'(value) {
+        lighting.directionalLight.light.position.x = value;
+      },
+      get 'Y'() {
+        return lighting.directionalLight.light.position.y;
+      },
+      set 'Y'(value) {
+        lighting.directionalLight.light.position.y = value;
+      },
+      get 'Z'() {
+        return lighting.directionalLight.light.position.z;
+      },
+      set 'Z'(value) {
+        lighting.directionalLight.light.position.z = value;
+      }
+    }
+    ambientLightFolder.add(propsAmbientLight, 'Intensity', 0, 1).step(0.01);
+    ambientLightFolder.addColor(propsAmbientLight, 'Color').onChange(function(value) {
+      lighting.ambientLight.light.color.setHex(value);
+    });
+    directionalLightFolder.add(propsDirectionalLight, 'Intensity', 0, 1).step(0.01);
+    directionalLightFolder.addColor(propsDirectionalLight, 'Color').onChange(function(value) {
+      lighting.directionalLight.light.color.setHex(value);
+    });
+    directionalLightPositionFolder.add(propsDirectionalLightPosition, 'X', -100, 100).step(0.01);
+    directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Y', -100, 100).step(0.01);
+    directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Z', -100, 100).step(0.01);
+
+    // console.log(lighting.ambientLight.intensity);
+
     // for debugging
     // const cube = new THREE.Mesh(
     //   new THREE.BoxGeometry(3, 3, 3), 
@@ -64,7 +142,10 @@
     //   requestAnimationFrame( animate );
 
     // }, 1000 / 30 );
+    stats.begin();
+    // update memory panel
     renderer.render(scene, camera.camera);
+    stats.end();
     // controls.update();
     if(player){camera.update(player.body)};
     world.step(1 / 60);

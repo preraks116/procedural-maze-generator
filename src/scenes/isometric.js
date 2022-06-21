@@ -66,56 +66,56 @@ const sceneObjects = {
   //   linearDamping: 0.5,
   //   resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
   // }, scene, world),
-  fbxScene: new FBXModel({
-    position: { x: 0, y: -0.5, z: -5 },
-    scale: { x: 0.01, y: 0.01, z: 0.01 },
-    mass: 0,
-    rotation: { x: 0, y: 0, z: 0 },
-    linearDamping: 0.5,
-    resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx',
-    colliders: {
-      cubicleWall1: {
-        type: "box",
-        position: { x: 1.4, y: 0.65, z: 7.45 },
-        dimension: { x: 0.1, y: 1.2, z: 1.95 },
-      },
-      cubicleWall2: {
-        type: "box",
-        position: { x: 2.8, y: 0.65, z: 6.5 },
-        dimension: { x: 2.7, y: 1.2, z: 0.1 },
-      },
-      cubicleWall3: {
-        type: "box",
-        position: { x: 2.8, y: 0.65, z: 9.4 },
-        dimension: { x: 2.7, y: 1.2, z: 0.1 },
-      },
-      smallWall: {
-        type: "box",
-        position: { x: 3.25, y: 0.65, z: 4.4 },
-        dimension: { x: 1.9, y: 1.2, z: 0.1 },
-      },
-      wall: {
-        type: "box",
-        position: { x: 4.2, y: 0.65, z: 6.3 },
-        dimension: { x: 0.1, y: 1.2, z: 8.4 },
-      },
-      wall2: {
-        type: "box",
-        position: { x: 3.65, y: 0.65, z: 2.1 },
-        dimension: { x: 1.15, y: 1.2, z: 0.1 },
-      },
-      wall3: {
-        type: "box",
-        position: { x: 3.13, y: 0.65, z: 1 },
-        dimension: { x: 0.1, y: 1.2, z: 2.325 },
-      },
-      lattice: {
-        type: "box",
-        position: { x: 0.05, y: 0.65, z: 0.95 },
-        dimension: { x: 0.1, y: 1.35, z: 2.1 },
-      }
-    }
-  }, scene, world),
+  // fbxScene: new FBXModel({
+  //   position: { x: 0, y: -0.5, z: -5 },
+  //   scale: { x: 0.01, y: 0.01, z: 0.01 },
+  //   mass: 0,
+  //   rotation: { x: 0, y: 0, z: 0 },
+  //   linearDamping: 0.5,
+  //   resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx',
+  //   colliders: {
+  //     cubicleWall1: {
+  //       type: "box",
+  //       position: { x: 1.4, y: 0.65, z: 7.45 },
+  //       dimension: { x: 0.1, y: 1.2, z: 1.95 },
+  //     },
+  //     cubicleWall2: {
+  //       type: "box",
+  //       position: { x: 2.8, y: 0.65, z: 6.5 },
+  //       dimension: { x: 2.7, y: 1.2, z: 0.1 },
+  //     },
+  //     cubicleWall3: {
+  //       type: "box",
+  //       position: { x: 2.8, y: 0.65, z: 9.4 },
+  //       dimension: { x: 2.7, y: 1.2, z: 0.1 },
+  //     },
+  //     smallWall: {
+  //       type: "box",
+  //       position: { x: 3.25, y: 0.65, z: 4.4 },
+  //       dimension: { x: 1.9, y: 1.2, z: 0.1 },
+  //     },
+  //     wall: {
+  //       type: "box",
+  //       position: { x: 4.2, y: 0.65, z: 6.3 },
+  //       dimension: { x: 0.1, y: 1.2, z: 8.4 },
+  //     },
+  //     wall2: {
+  //       type: "box",
+  //       position: { x: 3.65, y: 0.65, z: 2.1 },
+  //       dimension: { x: 1.15, y: 1.2, z: 0.1 },
+  //     },
+  //     wall3: {
+  //       type: "box",
+  //       position: { x: 3.13, y: 0.65, z: 1 },
+  //       dimension: { x: 0.1, y: 1.2, z: 2.325 },
+  //     },
+  //     lattice: {
+  //       type: "box",
+  //       position: { x: 0.05, y: 0.65, z: 0.95 },
+  //       dimension: { x: 0.1, y: 1.35, z: 2.1 },
+  //     }
+  //   }
+  // }, scene, world),
   // objScene: new OBJModel({
   //   position: { x: 7, y: -0.5, z: -5 },
   //   scale: { x: 0.01, y: 0.01, z: 0.01 },
@@ -140,88 +140,88 @@ const sceneObjects = {
   //   linearDamping: 0.5,
   //   resourceURL: 'src/assets/models/obj/monkey.obj'
   // }, scene, world),
-  // scene2: new OBJModel({
-  //   position: { x: 0, y: -0.5, z: 0 },
-  //   // scale: { x: 0.5, y: 0.5, z: 0.5 },
-  //   scale: { x: 0.01, y: 0.01, z: 0.01 },
-  //   mass: 0,
-  //   rotation: { x: 0, y: Math.PI, z: 0 },
-  //   linearDamping: 0.5,
-  //   resourceURL: 'src/assets/models/obj/scene2.obj',
-  //   colliders: {
-  //     stairs: {
-  //       type: "box",
-  //       position: { x: -3.9, y: 0.5, z: -0.6 },
-  //       dimension: { x: 7.2, y: 1.1, z: 0.1 },
-  //       rotation: { x: -Math.PI/2, y: Math.PI/6, z: 0 }
-  //     },
-  //     platform: {
-  //       type: "box",
-  //       position: { x: -8.95, y: 2.25, z: 0.3 },
-  //       dimension: { x: 3.6, y: 0.15, z: 5.8 },
-  //     },
-  //     tombstone: {
-  //       type: "box",
-  //       position: { x: -1.2, y: 1, z: 2.05 },
-  //       dimension: { x: 2.3, y: 2, z: 0.35 },
-  //     },
-  //     lattice: {
-  //       type: "box",
-  //       position: { x: 0, y: 0.65, z: 0.95 },
-  //       dimension: { x: 0.15, y: 1.35, z: 2 },
-  //     },
-  //     latticeWall: {
-  //       type: "box",
-  //       position: { x: 3.15, y: 0.65, z: 0.9 },
-  //       dimension: { x: 0.2, y: 1.35, z: 2.3 },
-  //     },
-  //     wall: {
-  //       type: "box",
-  //       position: { x: 4.15, y: 0.65, z: 8.1 },
-  //       dimension: { x: 0.15, y: 1.2, z: 12 },
-  //     },
-  //     wall2: {
-  //       type: "box",
-  //       position: { x: 3.25, y: 0.65, z: 4.4 },
-  //       dimension: { x: 1.9, y: 1.2, z: 0.1 },
-  //     },
-  //     wall3: {
-  //       type: "box",
-  //       position: { x: 2.8, y: 0.65, z: 7.7 },
-  //       dimension: { x: 2.7, y: 1.2, z: 0.1 },
-  //     },
-  //     wall4: {
-  //       type: "box",
-  //       position: { x: 1.35, y: 0.65, z: 8.6 },
-  //       dimension: { x: 0.15, y: 1.2, z: 2 },
-  //     },
-  //     wall5: {
-  //       type: "box",
-  //       position: { x: 3.5, y: 0.65, z: 2.1 },
-  //       dimension: { x: 1, y: 1.2, z: 0.1 },
-  //     },
-  //     wall6: {
-  //       type: "box",
-  //       position: { x: 2.8, y: 0.65, z: 11.3 },
-  //       dimension: { x: 2.7, y: 1.2, z: 0.1 },
-  //     },
-  //     arch1: {
-  //       type: "box",
-  //       position: { x: -2.3, y: 0.5, z: 9.1 },
-  //       dimension: { x: 0.4, y: 1, z: 3.4 },
-  //     },
-  //     arch2: {
-  //       type: "box",
-  //       position: { x: -10.4, y: 0.65, z: 9.1 },
-  //       dimension: { x: 0.4, y: 1, z: 3.7 },
-  //     },
-  //     archTombstone: {
-  //       type: "box",
-  //       position: { x: -8.2, y: 0.65, z: 8.55 },
-  //       dimension: { x: 2.3, y: 2, z: 0.35 },
-  //     }
-  //   }
-  // }, scene, world),
+  scene2: new OBJModel({
+    position: { x: 10, y: -0.5, z: 0 },
+    // scale: { x: 0.5, y: 0.5, z: 0.5 },
+    scale: { x: 0.01, y: 0.01, z: 0.01 },
+    mass: 0,
+    rotation: { x: 0, y: 0, z: 0 },
+    linearDamping: 0.5,
+    resourceURL: 'src/assets/models/obj/scene2.obj',
+    colliders: {
+      stairs: {
+        type: "box",
+        position: { x: -3.9, y: 0.5, z: -0.6 },
+        dimension: { x: 7.2, y: 1.1, z: 0.1 },
+        rotation: { x: -Math.PI/2, y: Math.PI/6, z: 0 }
+      },
+      platform: {
+        type: "box",
+        position: { x: -8.95, y: 2.25, z: 0.3 },
+        dimension: { x: 3.6, y: 0.15, z: 5.8 },
+      },
+      tombstone: {
+        type: "box",
+        position: { x: -1.2, y: 1, z: 2.05 },
+        dimension: { x: 2.3, y: 2, z: 0.35 },
+      },
+      lattice: {
+        type: "box",
+        position: { x: 0, y: 0.65, z: 0.95 },
+        dimension: { x: 0.15, y: 1.35, z: 2 },
+      },
+      latticeWall: {
+        type: "box",
+        position: { x: 3.15, y: 0.65, z: 0.9 },
+        dimension: { x: 0.2, y: 1.35, z: 2.3 },
+      },
+      wall: {
+        type: "box",
+        position: { x: 4.15, y: 0.65, z: 8.1 },
+        dimension: { x: 0.15, y: 1.2, z: 12 },
+      },
+      wall2: {
+        type: "box",
+        position: { x: 3.25, y: 0.65, z: 4.4 },
+        dimension: { x: 1.9, y: 1.2, z: 0.1 },
+      },
+      wall3: {
+        type: "box",
+        position: { x: 2.8, y: 0.65, z: 7.7 },
+        dimension: { x: 2.7, y: 1.2, z: 0.1 },
+      },
+      wall4: {
+        type: "box",
+        position: { x: 1.35, y: 0.65, z: 8.6 },
+        dimension: { x: 0.15, y: 1.2, z: 2 },
+      },
+      wall5: {
+        type: "box",
+        position: { x: 3.5, y: 0.65, z: 2.1 },
+        dimension: { x: 1, y: 1.2, z: 0.1 },
+      },
+      wall6: {
+        type: "box",
+        position: { x: 2.8, y: 0.65, z: 11.3 },
+        dimension: { x: 2.7, y: 1.2, z: 0.1 },
+      },
+      arch1: {
+        type: "box",
+        position: { x: -2.3, y: 0.5, z: 9.1 },
+        dimension: { x: 0.4, y: 1, z: 3.4 },
+      },
+      arch2: {
+        type: "box",
+        position: { x: -10.4, y: 0.65, z: 9.1 },
+        dimension: { x: 0.4, y: 1, z: 3.7 },
+      },
+      archTombstone: {
+        type: "box",
+        position: { x: -8.2, y: 0.65, z: 8.55 },
+        dimension: { x: 2.3, y: 2, z: 0.35 },
+      }
+    }
+  }, scene, world),
 };
 
 // const with all collision behaviors
@@ -230,7 +230,7 @@ const collisions = {
     sceneObjects['cube'].material,
     sceneObjects['plane'].material,
     {
-      // friction: 0
+      friction: 0
     }
   )
 }
