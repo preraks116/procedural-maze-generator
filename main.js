@@ -24,6 +24,7 @@
     // renderer.toneMapping = THREE.ACESFilmicToneMapping;
     // renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.type = THREE.PCFShadowMap;
+    console.log(renderer.shadowMap)
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
