@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger'
 import { Vector3 } from 'three';
-import { Cube } from "../components/objects/cube";
+import { Player } from "../components/objects/player";
 import { Plane } from "../components/objects/plane";
+import { Box } from '../components/objects/box';
 import { GLTFModel } from '../components/objects/models/gltfModel';
 import { FBXModel } from '../components/objects/models/fbxModel';
 import { OBJModel } from '../components/objects/models/objModel';
@@ -31,13 +32,37 @@ const cannonDebugger = new CannonDebugger(scene, world, {
     })
   },
 })
+let numcubes = 1;
+
+function addCube(sceneObjects) {
+  numcubes++;
+  // append numcubes to string
+  const id = `cube${numcubes}`;
+  const cube = new Cube({
+    position: { x: numcubes, y: 0, z: 0 },
+    color: 0x00ff00,
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    speed: 1,
+    mass: 1,
+    linearDamping: 0.9,
+    type: "player",
+    textures: textures.brick
+  }, scene, world);
+  sceneObjects[id] = cube;
+}
 
 // dictionary of all objects
 const sceneObjects = {
-  cube: new Cube({
+  player: new Player({
     position: { x: 0, y: 0, z: 0 },
     color: 0x00ff00,
-    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    // dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    outlineSize: 0.05,
+    dimension: {
+      radius: 0.25,
+      height: 0.1,
+      radialSegments: 32
+    },
     speed: 1,
     mass: 1,
     linearDamping: 0.9,
@@ -58,6 +83,15 @@ const sceneObjects = {
     dimension: { x: 20, y: 20 },
     rotation: { x: 0, y: 0, z: 0 }
   }, scene),
+  box: new Box({
+    position: { x: 1, y: 0, z: 0 },
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    mass: 1,
+    linearDamping: 0.9,
+    angularDamping: 0.1,
+    type: "player",
+    textures: textures.brick
+  }, scene, world),
   // boat: new GLTFModel({
   //   position: { x: -5, y: 1, z: 1 },
   //   scale: { x: 1, y: 1, z: 1 },
@@ -144,22 +178,32 @@ const sceneObjects = {
         position: { x: -0.2, y: 0, z: -0.2 },
         dimension: { x: 2.4, y: 1, z: 1.15 },
       },
+      // sofa1: {
+      //   type: "box",
+      //   position: { x: -0.9, y: -0.2, z: -0.15 },
+      //   dimension: { x: 0.8, y: 0.2, z: 0.45 },
+      // },
+      // sofa2: {
+      //   type: "box",
+      //   position: { x: -0.3, y: -0.1, z: -0.4 },
+      //   dimension: { x: 0.5 , y: 0.4, z: 0.2 },
+      // },
     }
   }, scene, world),
-  sprite2: new Sprite({
-    position: { x: 2, y: 0, z: -2 },
-    // dimension: { x: 1, y: 1, z: 1 },
-    rotation: { x: 0, y: 0, z: 0 },
-    mass: 0,
-    map: './src/assets/sprites/furniture/sofa_2.png',
-    alphaMap: './src/assets/sprites/furniture/sofa_2_alpha_channel.png',
-    colliders: {
-      cubicleWall1: {
-        type: "box",
-        position: { x: -0.15, y: 0, z: 0.2 },
-        dimension: { x: 0.95, y: 1, z: 1.2 },
-      }}
-  }, scene, world),
+  // sprite2: new Sprite({
+  //   position: { x: 2, y: 0, z: -2 },
+  //   // dimension: { x: 1, y: 1, z: 1 },
+  //   rotation: { x: 0, y: 0, z: 0 },
+  //   mass: 0,
+  //   map: './src/assets/sprites/furniture/sofa_2.png',
+  //   alphaMap: './src/assets/sprites/furniture/sofa_2_alpha_channel.png',
+  //   colliders: {
+  //     cubicleWall1: {
+  //       type: "box",
+  //       position: { x: -0.15, y: 0, z: 0.2 },
+  //       dimension: { x: 0.95, y: 1, z: 1.2 },
+  //     }}
+  // }, scene, world),
   // monkey: new OBJModel({
   //   position: { x: 0, y: 1, z: 0 },
   //   // scale: { x: 0.5, y: 0.5, z: 0.5 },
@@ -256,7 +300,9 @@ const sceneObjects = {
 // const with all collision behaviors
 const collisions = {
   cubePlane: new CANNON.ContactMaterial(
-    sceneObjects['cube'].material,
+    // sceneObjects['cube'].material,
+    sceneObjects['player'].material,
+    // sceneObjects['coin'].material,
     sceneObjects['plane'].material,
     {
       friction: 0

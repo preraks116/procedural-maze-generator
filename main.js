@@ -5,6 +5,7 @@
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
   import Stats from 'three/examples/jsm/libs/stats.module.js';
   import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+  import { textures } from './src/utils/textures';
   import { setKey } from './src/utils/keyControls';
   import { setZoom } from './src/components/camera/orthographicCamera';
   // import CannonDebugger from 'cannon-es-debugger'
@@ -15,7 +16,10 @@
 
   const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
   let controls, stats;
-  const player = sceneObjects['cube'];
+  // const player = sceneObjects['cube'];
+  const player = sceneObjects['player'];
+  // const player = sceneObjects['coin'];
+
 
   async function init() {
     // initialization
@@ -128,6 +132,33 @@
     // );
     // cube.position.set(3, 1.5, -3);
     // scene.add(  cube );
+
+    // add a cylinder
+    // console.log(scene);
+    // const cylinder = new THREE.Mesh(
+    //   new THREE.CylinderGeometry(0.5, 0.5, 0.1, 32),
+    //   new THREE.MeshStandardMaterial({color: 0xffff00})
+    // );
+    // cylinder.position.set(0, 1.5, 0);
+    // // rotate cylinder to face the camera
+    // cylinder.lookAt(camera.camera.position);
+    // cylinder.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // // cylinder.rotation.x = Math.PI / 2;
+    // // cylinder.rotation.z = Math.PI;
+
+    // scene.add(cylinder);
+
+    // const cylinder2 = new THREE.Mesh(
+    //   new THREE.CylinderGeometry(0.45, 0.45, 0.1, 32),
+    //   new THREE.MeshStandardMaterial(textures.brick)
+    // );
+    // cylinder2.position.set(0.1, 1.6, 0.1);
+    // // rotate cylinder to face the camera
+    // cylinder2.lookAt(camera.camera.position);
+    // cylinder2.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+    // // cylinder.rotation.x = Math.PI / 2;
+    // // cylinder.rotation.z = Math.PI;
+    // scene.add(cylinder2);
 
     // event listeners
     window.addEventListener('wheel', (e) => setZoom(e,camera));
