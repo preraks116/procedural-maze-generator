@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger'
 import { Vector3 } from 'three';    
-import { Cube } from "../components/objects/cube";
+import { Box } from "../components/objects/box";
 import { Plane } from "../components/objects/plane";
 import { GLTFModel } from '../components/objects/models/gltfModel';
 import { FBXModel } from '../components/objects/models/fbxModel';
@@ -30,7 +30,7 @@ const cannonDebugger = new CannonDebugger(scene, world, {
 
 // dictionary of all objects
 const sceneObjects = {
-    cube: new Cube({
+    cube: new Box({
         position: { x: 0, y: -0.4, z: 0 },
         color: 0x00ff00,
         dimension: { x: 1, y: 1, z: 1 },

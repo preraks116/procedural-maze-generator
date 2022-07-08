@@ -37,19 +37,28 @@ let numcubes = 1;
 function addCube(sceneObjects) {
   numcubes++;
   // append numcubes to string
-  const id = `cube${numcubes}`;
-  const cube = new Cube({
+  const id = `player${numcubes}`;
+  const player = new Player({
     position: { x: numcubes, y: 0, z: 0 },
     color: 0x00ff00,
-    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    // dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    outlineSize: 0.05,
+    dimension: {
+      radius: 0.25,
+      height: 0.1,
+      radialSegments: 32
+    },
     speed: 1,
     mass: 1,
     linearDamping: 0.9,
     type: "player",
     textures: textures.brick
   }, scene, world);
-  sceneObjects[id] = cube;
+  // console.log(player.body.position);
+  sceneObjects[id] = player;
 }
+
+
 
 // dictionary of all objects
 const sceneObjects = {
@@ -73,7 +82,7 @@ const sceneObjects = {
     scene: scene,
     position: { x: 0, y: -0.5, z: 0 },
     color: 0xffffff,
-    dimension: { x: 100, y: 100 },
+    dimension: { x: 25, y: 25 },
     rotation: { x: -Math.PI / 2, y: 0, z: 0 },
     mass: 0,
     linearDamping: 0.3
@@ -90,7 +99,36 @@ const sceneObjects = {
     linearDamping: 0.9,
     angularDamping: 0.1,
     type: "player",
-    textures: textures.brick
+    textures: textures.brick,
+  }, scene, world),
+  box2: new Box({
+    position: { x: 2, y: 0, z: 0 },
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    mass: 1,
+    hoverColor: 0x00fff0,
+    linearDamping: 0.9,
+    angularDamping: 0.1,
+    type: "player",
+    isHoverable: true,
+  }, scene, world),
+  box3: new Box({
+    position: { x: 3, y: 0, z: 0 },
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    mass: 1,
+    linearDamping: 0.9,
+    angularDamping: 0.1,
+    type: "player",
+    isClickable: true
+  }, scene, world),
+  box4: new Box({
+    position: { x: 3, y: 0, z: 1 },
+    dimension: { x: 0.3, y: 0.3, z: 0.3 },
+    mass: 1,
+    linearDamping: 0.9,
+    angularDamping: 0.1,
+    type: "player",
+    isHoverable: true,
+    isClickable: true
   }, scene, world),
   // boat: new GLTFModel({
   //   position: { x: -5, y: 1, z: 1 },
@@ -297,6 +335,7 @@ const sceneObjects = {
   // }, scene, world),
 };
 
+
 // const with all collision behaviors
 const collisions = {
   cubePlane: new CANNON.ContactMaterial(
@@ -309,6 +348,8 @@ const collisions = {
     }
   )
 }
+// addCube(sceneObjects);
+
 
 for (let key in collisions) {
   world.addContactMaterial(collisions[key]);
@@ -345,4 +386,4 @@ const camera = new OrthoCamera({
   far: 1000
 }, scene)
 
-export { sceneObjects, lighting, camera, scene, world, cannonDebugger };
+export { sceneObjects, lighting, camera, scene, world, cannonDebugger, numcubes, addCube };

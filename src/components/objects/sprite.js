@@ -12,7 +12,7 @@ function addColliders(colliders, body) {
         collider.rotation = collider.rotation ? collider.rotation : {x: 0, y: 0, z: 0};
         orientation.setFromEuler(collider.rotation.x, collider.rotation.y, collider.rotation.z);    
         body.addShape(shape, offset, orientation);
-        console.log(body.quaternion)
+        // console.log(body.quaternion)
 
     }
 }
@@ -47,7 +47,7 @@ class Sprite {
         this.spriteOffset = new CANNON.Vec3(0.1,0,0.1);
         this.box = new THREE.Box3().setFromObject(this.sprite);
         // subtract the max and min of the box to get the half dimensions
-        console.log(this.sprite.geometry)
+        // console.log(this.sprite.geometry)
         // get dimensions from bounding
         this.dimension = new CANNON.Vec3(
             (this.sprite.geometry.boundingBox.max.x - this.sprite.geometry.boundingBox.min.x)/2,

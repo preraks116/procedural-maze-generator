@@ -8,7 +8,7 @@ import { Vector3 } from 'three';
 function setZoom(e, camera) {
     if(camera.camera.zoom <= 16 && camera.camera.zoom >= 0.4) {
         camera.camera.zoom -= e.deltaY * 0.01;
-        console.log(camera.camera.zoom);
+        // console.log(camera.camera.zoom);
     }
     if(camera.camera.zoom < 0.4) {
         camera.camera.zoom = 0.4;

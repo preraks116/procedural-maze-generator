@@ -28,7 +28,7 @@ function addShapes(object, body) {
             // console.log(child);
             let result = threeToCannon(child, {type : ShapeType.HULL});
             let { shape, offset, quaterniion } = result;
-            console.log(result);
+            // console.log(result);
             // console.log(offset)
             // console.log(shape);
             // offset.y = 5;

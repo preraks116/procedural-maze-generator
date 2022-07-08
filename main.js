@@ -12,14 +12,24 @@
 
 
   // import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
-  import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
+  import { sceneObjects, lighting, camera, scene, world, cannonDebugger, numcubes, addCube } from './src/scenes/isometric'; 
 
   const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
   let controls, stats;
-  // const player = sceneObjects['cube'];
+  let intersects = [];
   const player = sceneObjects['player'];
-  // const player = sceneObjects['coin'];
+  var mouse, raycaster;
 
+  function onMouseMove(event) {
+ 
+    // calculate mouse position in normalized device coordinates
+    // (-1 to +1) for both components
+ 
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+ 
+}
+  
 
   async function init() {
     // initialization
@@ -28,9 +38,13 @@
     // renderer.toneMapping = THREE.ACESFilmicToneMapping;
     // renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    console.log(renderer.shadowMap)
+    // console.log(renderer.shadowMap)
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+
+    // mouse pointer
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
 
     // load camera
     camera.render();
@@ -160,15 +174,43 @@
     // // cylinder.rotation.z = Math.PI;
     // scene.add(cylinder2);
 
+    // addCube(sceneObjects);
+    // console.log(numcubes);
+
     // event listeners
+    window.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('wheel', (e) => setZoom(e,camera));
     window.addEventListener('keydown', (e) => setKey(e, true));
     window.addEventListener('resize', onWindowResize);
     window.addEventListener( 'keyup', (e) => setKey(e, false));
   }
 
+  function resetFromHover() {
+    for (let i = 0; i < intersects.length; i++) {
+      let object = intersects[i].object;
+      // intersects[ i ].object.material.opacity = 0.5;
+      if(object.userData.isHoverable) {
+        object.userData.resetHover();
+      }
+    }
+  }
+
+  function onHover() {
+    raycaster.setFromCamera(mouse, camera.camera);
+    intersects = raycaster.intersectObjects(scene.children);
+    // console.log(intersects);
+    for (let i = 0; i < intersects.length; i++) {
+      let object = intersects[i].object;
+      if(object.userData.isHoverable) {
+        object.userData.onHover();
+      }
+    }
+  }
+
   function animate() {
     requestAnimationFrame(animate);
+    resetFromHover();
+    onHover();
     // setTimeout( function() {
 
     //   requestAnimationFrame( animate );

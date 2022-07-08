@@ -7,11 +7,14 @@ class Box {
     constructor(props, scene, world) {
         this.position = props.position;
         this.color = props.color ? props.color : 0xffffff;
+        this.hoverColor = props.hoverColor ? props.hoverColor : 0xffff00;
         this.scene = scene;
         this.dimension = props.dimension;
         this.speed = props.speed
         this.world = world;
         this.mass = props.mass
+        this.isHoverable = props.isHoverable ? props.isHoverable : false;
+        this.isClickable = props.isClickable ? props.isClickable : false;
         this.linearDamping = props.linearDamping
         this.angularDamping = props.angularDamping
         this.material = new CANNON.Material();
@@ -24,8 +27,18 @@ class Box {
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.receiveShadow = true;
         this.mesh.castShadow = true;
+        this.mesh.transparent = true;
+        // Hover userData
+        this.mesh.userData.isHoverable = this.isHoverable;
+        this.mesh.userData.onHover = this.onHover.bind(this);
+        this.mesh.userData.resetHover = this.resetHover.bind(this);
+        // Click userData
+        this.mesh.userData.isClickable = this.isClickable;
+        this.mesh.userData.onClick = this.onClick.bind(this);
+        this.mesh.userData.resetClick = this.resetClick.bind(this);
         this.scene.add(this.mesh);
-
+        console.log(this.mesh.userData);
+        
         // cannon js rendering
         this.body = new CANNON.Body({
             mass: this.mass,
@@ -49,6 +62,18 @@ class Box {
         // threejs part copying cannon part
         this.mesh.position.copy(this.body.position);
         this.mesh.quaternion.copy(this.body.quaternion);
+    }
+    onHover() {
+        this.mesh.material.color.setHex(this.hoverColor);
+    }
+    resetHover() {
+        this.mesh.material.color.setHex(this.color);
+    }
+    onClick() {
+
+    }
+    resetClick() {
+
     }
 }
 

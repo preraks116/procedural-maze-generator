@@ -17,6 +17,13 @@ class Player {
         this.material = new CANNON.Material();
         this.type = props.type;
         this.textures = props.textures;
+        this.body = new CANNON.Body({
+            mass: this.mass,
+            position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
+            linearDamping: this.linearDamping,
+            angularDamping: 1,
+            material: this.material
+        });
     }
     render() {
         // three js rendering
@@ -34,7 +41,7 @@ class Player {
         this.outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
         this.outline.receiveShadow = true;
         this.outline.castShadow = true;
-        console.log(this.scene.children[0].position);
+        // console.log(this.scene.children[0].position);
         this.outline.lookAt(this.scene.children[0].position);
         this.outline.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
         // this.scene.add(this.outline);
@@ -43,7 +50,7 @@ class Player {
         const geometry = new THREE.CylinderGeometry(this.dimension.radius - this.outlineSize, this.dimension.radius - this.outlineSize, this.dimension.height, this.dimension.radialSegments);
         const material = this.textures ? new THREE.MeshStandardMaterial(this.textures): new THREE.MeshPhongMaterial({ color: 0xffffff });
         this.mesh = new THREE.Mesh(geometry, material);
-        console.log(this.scene.children[0].position);
+        // console.log(this.scene.children[0].position);
         this.mesh.lookAt(this.scene.children[0].position);
         this.mesh.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
         this.group.add(this.mesh);
@@ -58,13 +65,13 @@ class Player {
         // this.scene.add(this.mesh);
         
         // cannon js rendering
-        this.body = new CANNON.Body({
-            mass: this.mass,
-            position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
-            linearDamping: this.linearDamping,
-            angularDamping: 1,
-            material: this.material
-        });
+        // this.body = new CANNON.Body({
+        //     mass: this.mass,
+        //     position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
+        //     linearDamping: this.linearDamping,
+        //     angularDamping: 1,
+        //     material: this.material
+        // });
         // get dimensions of mesh
         const box = new THREE.Box3().setFromObject(this.outline);
         // console.log(box);
@@ -86,6 +93,7 @@ class Player {
             }
         }
         // threejs part copying cannon part
+        // console.log(this.body.position)
         this.group.position.copy(this.body.position);
         this.group.quaternion.copy(this.body.quaternion);
     }
