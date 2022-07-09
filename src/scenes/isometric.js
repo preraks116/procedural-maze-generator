@@ -76,7 +76,8 @@ const sceneObjects = {
     mass: 1,
     linearDamping: 0.9,
     type: "player",
-    textures: textures.brick
+    textures: textures.brick,
+    // isHoverable: true,
   }, scene, world),
   plane: new Plane({
     scene: scene,
@@ -87,11 +88,11 @@ const sceneObjects = {
     mass: 0,
     linearDamping: 0.3
   }, scene, world),
-  grid: new gridHelper({
-    position: { x: 0, y: -0.5, z: 0 },
-    dimension: { x: 20, y: 20 },
-    rotation: { x: 0, y: 0, z: 0 }
-  }, scene),
+  // grid: new gridHelper({
+  //   position: { x: 0, y: -0.5, z: 0 },
+  //   dimension: { x: 20, y: 20 },
+  //   rotation: { x: 0, y: 0, z: 0 }
+  // }, scene),
   box: new Box({
     position: { x: 1, y: 0, z: 0 },
     dimension: { x: 0.3, y: 0.3, z: 0.3 },

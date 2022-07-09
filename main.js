@@ -8,6 +8,7 @@
   import { textures } from './src/utils/textures';
   import { setKey } from './src/utils/keyControls';
   import { setZoom } from './src/components/camera/orthographicCamera';
+  import * as GSAP from 'gsap'
   // import CannonDebugger from 'cannon-es-debugger'
 
 
@@ -27,8 +28,27 @@
  
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
- 
-}
+    getIntersects();
+  }
+
+  function onClick() {
+    // console.log(intersects);
+    if(intersects.length > 0 && intersects[1].object.name === 'plane') {
+      // console.log('plane clicked');
+      let coordinate = intersects[1].point;
+      console.log(coordinate);
+      // tween the players position to this coordinate
+      var tween = GSAP.gsap.to(player.body.position, {
+        duration: 1,
+        x: coordinate.x,
+        z: coordinate.z,
+        ease: "power3.out"
+        });
+    }
+    if(intersects.length > 0 && intersects[0].object.userData.isClickable) {
+      intersects[0].object.userData.onClick();
+    }
+  }
   
 
   async function init() {
@@ -178,6 +198,7 @@
     // console.log(numcubes);
 
     // event listeners
+    window.addEventListener('click', onClick);
     window.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('wheel', (e) => setZoom(e,camera));
     window.addEventListener('keydown', (e) => setKey(e, true));
@@ -188,17 +209,18 @@
   function resetFromHover() {
     for (let i = 0; i < intersects.length; i++) {
       let object = intersects[i].object;
-      // intersects[ i ].object.material.opacity = 0.5;
       if(object.userData.isHoverable) {
         object.userData.resetHover();
       }
     }
   }
 
-  function onHover() {
+  function getIntersects() {
     raycaster.setFromCamera(mouse, camera.camera);
     intersects = raycaster.intersectObjects(scene.children);
-    // console.log(intersects);
+  }
+
+  function onHover() {
     for (let i = 0; i < intersects.length; i++) {
       let object = intersects[i].object;
       if(object.userData.isHoverable) {
@@ -209,17 +231,11 @@
 
   function animate() {
     requestAnimationFrame(animate);
-    resetFromHover();
     onHover();
-    // setTimeout( function() {
-
-    //   requestAnimationFrame( animate );
-
-    // }, 1000 / 30 );
     stats.begin();
-    // update memory panel
     renderer.render(scene, camera.camera);
     stats.end();
+    resetFromHover();
     // controls.update();
     if(player){camera.update(player.body)};
     world.step(1 / 60);

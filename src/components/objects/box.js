@@ -1,13 +1,16 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { keyDict } from '../../utils/keyControls';
+import { EventDispatcher } from 'three';
 
 
-class Box {
+class Box extends EventDispatcher {
     constructor(props, scene, world) {
+        super();
         this.position = props.position;
         this.color = props.color ? props.color : 0xffffff;
         this.hoverColor = props.hoverColor ? props.hoverColor : 0xffff00;
+        this.clickColor = props.clickColor ? props.clickColor : 0xf00000;
         this.scene = scene;
         this.dimension = props.dimension;
         this.speed = props.speed
@@ -35,10 +38,8 @@ class Box {
         // Click userData
         this.mesh.userData.isClickable = this.isClickable;
         this.mesh.userData.onClick = this.onClick.bind(this);
-        this.mesh.userData.resetClick = this.resetClick.bind(this);
         this.scene.add(this.mesh);
-        console.log(this.mesh.userData);
-        
+
         // cannon js rendering
         this.body = new CANNON.Body({
             mass: this.mass,
@@ -70,10 +71,13 @@ class Box {
         this.mesh.material.color.setHex(this.color);
     }
     onClick() {
-
-    }
-    resetClick() {
-
+        // if the color is not the click color, change it to the click color
+        if (this.mesh.material.color.getHex() !== this.clickColor) {
+            this.mesh.material.color.setHex(this.clickColor);
+        }
+        else {
+            this.mesh.material.color.setHex(this.color);
+        }
     }
 }
 
