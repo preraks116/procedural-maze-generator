@@ -3,6 +3,7 @@ import * as CANNON from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger'
 import { Vector3 } from 'three';    
 import { Box } from "../components/objects/box";
+import { Ball } from "../components/objects/ball";
 import { Plane } from "../components/objects/plane";
 import { GLTFModel } from '../components/objects/models/gltfModel';
 import { FBXModel } from '../components/objects/models/fbxModel';
@@ -30,25 +31,40 @@ const cannonDebugger = new CannonDebugger(scene, world, {
 
 // dictionary of all objects
 const sceneObjects = {
-    cube: new Box({
-        position: { x: 0, y: -0.4, z: 0 },
-        color: 0x00ff00,
-        dimension: { x: 1, y: 1, z: 1 },
-        speed: 1,
+    ball: new Ball({
+        position: { x: 0, y: 1, z: 0 },
+        color: 0xff0000,
+        radius: 0.5,
         mass: 1,
-        linearDamping: 0.3,
+        speed: new Vector3(0, 0, 0),
+        isHoverable: true,
+        isClickable: true,
+        linearDamping: 0.9,
+        angularDamping: 0.9,
+        textures: textures.ball,
         type: "player",
+        speed: 5
+    }, scene, world),
+    cube: new Box({
+        position: { x: 0, y: 0, z: 3 },
+        color: 0xff0000,
+        dimension: { x: 10, y: 5, z: 0.5 },
+        speed: 1,
+        mass: 0,
+        linearDamping: 0.3,
+        type: "wall",
         textures: textures.brick
     }, scene, world),
-    // cube2: new Cube({
-    //     position: { x: 5, y: 0.5, z: 0 },
-    //     color: 0x00ff0,
-    //     dimension: { x: 1, y: 2, z: 2 },
-    //     speed: 1,
-    //     mass: 0,
-    //     linearDamping: 0.3,
-    //     type: "static"
-    // }, scene, world),
+    cube2: new Box({
+        position: { x: 5, y: 0, z: -1.75 },
+        color: 0xff0000,
+        dimension: { x: 0.5, y: 5, z: 10 },
+        speed: 1,
+        mass: 0,
+        linearDamping: 0.3,
+        type: "wall",
+        textures: textures.brick
+    }, scene, world),
     plane: new Plane({
         scene: scene,
         position: { x: 0, y: -0.5, z: 0 },
@@ -62,21 +78,6 @@ const sceneObjects = {
         mass: 0,
         linearDamping: 0.3,
     }, scene, world),
-    // boat: new GLTFModel({
-    //     position: { x: 1, y: 1, z: 1 },
-    //     scale: { x: 0.3, y: 0.3, z: 0.3 },
-    //     mass: 1,
-    //     linearDamping: 0.5,
-    //     resourceURL: 'src/assets/models/gltf/boat/scene2.gltf'
-    // }, scene, world),
-    // fbxScene: new FBXModel({
-    //     position: { x: 1, y: 1, z: 1 },
-    //     scale: { x: 0.005, y: 0.005, z: 0.005 },
-    //     rotation: { x: 0, y: -Math.PI/2, z: 0 },    
-    //     mass: 1,
-    //     linearDamping: 0.5,
-    //     resourceURL: 'src/assets/models/fbx/testScene/test-scene.fbx'
-    // }, scene, world),
 };
 
 const lighting = {
@@ -92,26 +93,26 @@ const lighting = {
     }, scene)
 }
 
-// const with all collision behaviors
-const collisions = {
-    cubePlane: new CANNON.ContactMaterial(
-        sceneObjects['cube'].material,
-        sceneObjects['plane'].material,
-        {
-            // friction: 0,
-            // restitution: 0.9
-        }
-    )
-}
+// // const with all collision behaviors
+// const collisions = {
+//     // cubePlane: new CANNON.ContactMaterial(
+//     //     sceneObjects['cube'].material,
+//     //     sceneObjects['plane'].material,
+//     //     {
+//     //         // friction: 0,
+//     //         // restitution: 0.9
+//     //     }
+//     // )
+// }
 
-// adding collision behaviors to world
-for (let key in collisions) {
-    world.addContactMaterial(collisions[key]);
-}
+// // adding collision behaviors to world
+// for (let key in collisions) {
+//     world.addContactMaterial(collisions[key]);
+// }
 
 // camera
 const camera = new PerspCamera({
-    position: { x: 0, y: 4, z: 5 },
+    position: { x: 0, y: 20, z: 0 },
     lookAt: new Vector3(0, 0, 0),
     up: { x: 0, y: 1, z: 0 },
     aspect: window.innerWidth / window.innerHeight,

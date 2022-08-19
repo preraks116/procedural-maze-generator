@@ -29,6 +29,7 @@ class OrthoCamera {
         this.height = props.height;
         this.near = props.near;
         this.far = props.far;
+        this.group = new THREE.Group();
         this.camera = new THREE.OrthographicCamera(this.width / - 2, this.width / 2, this.height / 2, this.height / - 2, this.near, this.far);
         // this.camera = new THREE.OrthographicCamera(this.left, this.right, this.top, this.bottom, this.near, this.far);
         this.scene = scene;
@@ -42,11 +43,13 @@ class OrthoCamera {
         this.camera.zoom = 1;
         this.camera.updateProjectionMatrix();
         this.camera.up = this.up;
-        this.scene.add(this.camera);
+        this.group.add(this.camera);
+        this.scene.add(this.group);
+        console.log(this.group);
     }
     update(target) {
-        this.camera.position.copy(target.position).add(this.cameraOffset);
-        this.camera.updateProjectionMatrix();
+        // this.group.position.copy(target.position).add(this.cameraOffset);
+        // this.camera.updateProjectionMatrix();
     }
 }
 

@@ -27,7 +27,7 @@ class PerspCamera {
     this.scene.add(this.camera);
   }
   update(target) {
-    this.camera.position.copy(target.position).add(this.cameraOffset);
+    // this.camera.position.copy(target.position).add(this.cameraOffset);
   }
 }
 

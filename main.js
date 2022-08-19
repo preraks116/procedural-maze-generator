@@ -12,8 +12,8 @@
   // import CannonDebugger from 'cannon-es-debugger'
 
 
-  // import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
-  import { sceneObjects, lighting, camera, scene, world, cannonDebugger, numcubes, addCube } from './src/scenes/isometric'; 
+  import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/perspective';
+  // import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric'; 
 
   const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
   let controls, stats;
@@ -157,46 +157,6 @@
     directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Y', -100, 100).step(0.01);
     directionalLightPositionFolder.add(propsDirectionalLightPosition, 'Z', -100, 100).step(0.01);
 
-    // console.log(lighting.ambientLight.intensity);
-
-    // for debugging
-    // const cube = new THREE.Mesh(
-    //   new THREE.BoxGeometry(3, 3, 3), 
-    //   new THREE.MeshStandardMaterial(textures.brick)
-    // );
-    // cube.position.set(3, 1.5, -3);
-    // scene.add(  cube );
-
-    // add a cylinder
-    // console.log(scene);
-    // const cylinder = new THREE.Mesh(
-    //   new THREE.CylinderGeometry(0.5, 0.5, 0.1, 32),
-    //   new THREE.MeshStandardMaterial({color: 0xffff00})
-    // );
-    // cylinder.position.set(0, 1.5, 0);
-    // // rotate cylinder to face the camera
-    // cylinder.lookAt(camera.camera.position);
-    // cylinder.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // // cylinder.rotation.x = Math.PI / 2;
-    // // cylinder.rotation.z = Math.PI;
-
-    // scene.add(cylinder);
-
-    // const cylinder2 = new THREE.Mesh(
-    //   new THREE.CylinderGeometry(0.45, 0.45, 0.1, 32),
-    //   new THREE.MeshStandardMaterial(textures.brick)
-    // );
-    // cylinder2.position.set(0.1, 1.6, 0.1);
-    // // rotate cylinder to face the camera
-    // cylinder2.lookAt(camera.camera.position);
-    // cylinder2.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2);
-    // // cylinder.rotation.x = Math.PI / 2;
-    // // cylinder.rotation.z = Math.PI;
-    // scene.add(cylinder2);
-
-    // addCube(sceneObjects);
-    // console.log(numcubes);
-
     // event listeners
     window.addEventListener('click', onClick);
     window.addEventListener('mousemove', onMouseMove, false);
@@ -238,7 +198,7 @@
     resetFromHover();
     // controls.update();
     if(player){camera.update(player.body)};
-    world.step(1 / 60);
+    world.step(1 / 144);
 
     for (let key in sceneObjects) {
       sceneObjects[key].update();
