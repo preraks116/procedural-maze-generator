@@ -137,7 +137,7 @@ const lighting = {
 
 // camera
 const camera = new OrthoCamera({
-  position: { x: 20, y: 20, z: 20 },
+  position: { x: 20, y: 100, z: 20 },
   rotation: {
     order: 'YXZ',
     x: Math.atan(- 1 / Math.sqrt(2)),
