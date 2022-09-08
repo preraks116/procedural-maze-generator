@@ -90,8 +90,9 @@ function renderMaze(m) {
   seed += paddedX;
   seed += paddedY;
   // console.log(seed);
-  console.log("x:", paddedX);
-  console.log("y:", paddedY);
+  console.log("x:", m.x, paddedX);
+  console.log("y:", m.y, paddedY);
+  let wallSeed = '';
   // console.log(mSize, lineSize);
   let z = -40;
   let x;
@@ -100,7 +101,8 @@ function renderMaze(m) {
       x = -40;
       for(let j = 0; j < lineSize-1; j+=4) {
         if(maze[i][j+1] === '-') {
-          seed += '1'
+          // seed += '1'
+          wallSeed += '1'
           sceneObjects[`wall${i}${j}`] = new Box({
             position: { x: x, y: 1, z: z -2.5 },
             color: 0xff0000,
@@ -113,7 +115,8 @@ function renderMaze(m) {
           }, scene, world);
         }
         else {
-          seed += '0'
+          // seed += '0'
+          wallSeed += '0'
         }
         x += 5;
       }
@@ -123,7 +126,8 @@ function renderMaze(m) {
       // for(let j = 0; j < 1; j+=4) {
       for(let j = 0; j < lineSize; j+=4) {
         if(maze[i][j] === '|') {
-          seed += '1'
+          // seed += '1'
+          wallSeed += '1'
           sceneObjects[`wall${i}${j}`] = new Box({
             position: { x: x + 2.5, y: 1, z: z },
             color: 0xff0000,
@@ -136,23 +140,32 @@ function renderMaze(m) {
           }, scene, world);
         }
         else {
-          seed += '0'
+          // seed += '0'
+          wallSeed += '0'
         }
         x += 5;
       }
       z +=5;
     }
   }
-  const hexSeed = parseInt(seed, 2).toString(36);
-  console.log(hexSeed);
+  // console.log(wallSeed)
+  // convert wallSeed to base 36
+  // convert seed to base 36
+  const seedBase36 = parseInt(seed, 2).toString(36);
+  console.log("seed in base 36:", seedBase36);
 
-  const zeroCount = (hexSeed.match(/0+$/)||[])[0].length;
-  console.log(zeroCount)
+  const wallSeedBase36 = parseInt(wallSeed, 2).toString(36);
+  console.log( "wallseed in base 36:", wallSeedBase36);
+  // const hexSeed = parseInt(seed, 2).toString(36);
+  // console.log(hexSeed);
 
-  const trimmedSeed = hexSeed.slice(0, -zeroCount);
-  console.log(trimmedSeed);
+  const zeroCount = (wallSeedBase36.match(/0+$/)||[])[0].length;
+  console.log("number of zeros at the end:",zeroCount)
 
-  const finalSeed = trimmedSeed + ":" + zeroCount;
+  const trimmedSeed = wallSeedBase36.slice(0, -zeroCount);
+  console.log("after removing zeros:",trimmedSeed);
+
+  const finalSeed = seedBase36 + ":" + trimmedSeed + ":" + zeroCount;
   console.log(finalSeed);
 }
 
