@@ -1,4 +1,4 @@
-# threejs-playground
+# threejs-maze-generator
 Procedurally generate mazes using ThreeJS and CannonJS
 
 ## Running the game
