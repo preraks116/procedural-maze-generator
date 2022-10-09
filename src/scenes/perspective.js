@@ -28,13 +28,18 @@ const cannonDebugger = new CannonDebugger(scene, world, {
         }
       })
     },
-  })
+})
 
-// dictionary of all objects
-const sceneObjects = {
-    ball: new Ball({
+function addObject(id, cl, props) {
+    const obj = new cl(props, scene, world);
+    sceneObjects[id] = obj;
+    // obj.render();
+}
+
+function addBall(id, position) {
+    addObject(id, Ball, {
         // position: { x: -40, y: 1, z: -40 },
-        position: { x: -40, y: 1, z: -45 },
+        position: { x: position.x, y: 1, z: position.z },
         color: 0xff0000,
         radius: 0.5,
         mass: 1,
@@ -46,12 +51,40 @@ const sceneObjects = {
         textures: textures.ball,
         type: "player",
         speed: 5
-    }, scene, world),
+    })
+}
+
+function removeObject(id) {
+    sceneObjects[id].derender();
+    delete sceneObjects[id];
+}
+
+function checkObject(id) {
+    return sceneObjects[id] ? true : false;
+}
+
+// dictionary of all objects
+const sceneObjects = {
+    // ball: new Ball({
+    //     // position: { x: -40, y: 1, z: -40 },
+    //     position: { x: -40, y: 1, z: -45 },
+    //     color: 0xff0000,
+    //     radius: 0.5,
+    //     mass: 1,
+    //     speed: new Vector3(0, 0, 0),
+    //     isHoverable: true,
+    //     isClickable: true,
+    //     linearDamping: 0.9,
+    //     angularDamping: 0.9,
+    //     textures: textures.ball,
+    //     type: "player",
+    //     speed: 5
+    // }, scene, world),
     plane: new Plane({
         scene: scene,
         position: { x: 0, y: -0.5, z: 0 },
         color: 0xffffff,
-        dimension: { x: 200, y: 100 },
+        dimension: { x: 200, y: 200 },
         rotation: {
             x: -Math.PI / 2,
             y: 0,
@@ -140,14 +173,14 @@ const lighting = {
 // }
 
 // camera
-const camera = new PerspCamera({
-    position: { x: 0, y: 65, z: 0 },
-    lookAt: new Vector3(0, 0, 0),
-    up: { x: 0, y: 1, z: 0 },
-    aspect: window.innerWidth / window.innerHeight,
-    near: 0.1,
-    far: 1000,
-    fov: 75
-}, scene);
+// const camera = new PerspCamera({
+//     position: { x: 0, y: 65, z: 0 },
+//     lookAt: new Vector3(0, 0, 0),
+//     up: { x: 0, y: 1, z: 0 },
+//     aspect: window.innerWidth / window.innerHeight,
+//     near: 0.1,
+//     far: 1000,
+//     fov: 75
+// }, scene);
 
-export { sceneObjects, lighting, camera, scene, world, cannonDebugger };
+export { sceneObjects, addObject, removeObject, checkObject, addBall, lighting, scene, world, cannonDebugger };

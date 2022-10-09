@@ -5,36 +5,37 @@ import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { Ball } from "./src/components/objects/ball";
+import { mazes } from "./src/mazes/mazes";
+import { Vector3 } from 'three';    
 import { textures } from "./src/utils/textures";
+import { Maze } from "./src/components/objects/maze";
 import { setKey } from "./src/utils/keyControls";
 import { setZoom } from "./src/components/camera/orthographicCamera";
 import { Box } from "./src/components/objects/box";
 import * as GSAP from "gsap";
-// import CannonDebugger from 'cannon-es-debugger'
-
-import {
-  sceneObjects,
-  lighting,
-  camera,
-  scene,
-  world,
-  cannonDebugger,
-} from "./src/scenes/perspective";
-// import { sceneObjects, lighting, camera, scene, world, cannonDebugger } from './src/scenes/isometric';
+import { sceneObjects, lighting, scene, world, cannonDebugger, addObject, removeObject, addBall } from "./src/scenes/perspective";
+import { maze } from "./src/mazes/dfs";
 
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-const m = display(maze(17, 17));
+
+// will eventually get x and y from user input
+const X = 17;
+const Y = 17;
+
+let mazeClass = new Maze({
+  dimensions: { x: X, y: Y },
+  algoType: 'dfs',
+  start: { x: -40, z: -45 },
+  end: { x: 45, z: 40 },
+}, scene, world);
+
+
 let controls, stats;
 let intersects = [];
-const player = sceneObjects["player"];
 var mouse, raycaster;
 
-
-
-// const maze = display(maze(10,10));
-// console.log(maze)
-
-
+let camera;
 
 function onMouseMove(event) {
   // calculate mouse position in normalized device coordinates
@@ -75,100 +76,6 @@ function onMouseMove(event) {
 //   textures: textures.brick
 // }, scene, world);
 
-function renderMaze(m) {
-  const maze = m.text;
-  // console.log(maze);
-  const mSize = maze.length;
-  const lineSize = maze[0].length;
-  //convert msize and linesize to binary
-  const mSizeBinary = m.x.toString(2);
-  const lineSizeBinary = m.y.toString(2);
-  // if size of string is less than 7, add 0s to the front
-  const paddedX = mSizeBinary.padStart(5, "0");
-  const paddedY = lineSizeBinary.padStart(5, "0");
-  let seed = ''
-  seed += paddedX;
-  seed += paddedY;
-  // console.log(seed);
-  console.log("x:", m.x, paddedX);
-  console.log("y:", m.y, paddedY);
-  let wallSeed = '';
-  // console.log(mSize, lineSize);
-  let z = -40;
-  let x;
-  for (let i = 0; i < mSize; i++) {
-    if(i % 2 == 0) {
-      x = -40;
-      for(let j = 0; j < lineSize-1; j+=4) {
-        if(maze[i][j+1] === '-') {
-          // seed += '1'
-          wallSeed += '1'
-          sceneObjects[`wall${i}${j}`] = new Box({
-            position: { x: x, y: 1, z: z -2.5 },
-            color: 0xff0000,
-            dimension: { x: 5, y: 5, z: 0.5 },
-            speed: 1,
-            mass: 0,
-            linearDamping: 0.3,
-            type: "wall",
-            textures: textures.brick
-          }, scene, world);
-        }
-        else {
-          // seed += '0'
-          wallSeed += '0'
-        }
-        x += 5;
-      }
-    }
-    else {
-      x = -45;
-      // for(let j = 0; j < 1; j+=4) {
-      for(let j = 0; j < lineSize; j+=4) {
-        if(maze[i][j] === '|') {
-          // seed += '1'
-          wallSeed += '1'
-          sceneObjects[`wall${i}${j}`] = new Box({
-            position: { x: x + 2.5, y: 1, z: z },
-            color: 0xff0000,
-            dimension: { x: 0.5, y: 5, z: 5 },
-            speed: 1,
-            mass: 0,
-            linearDamping: 0.3,
-            type: "wall",
-            textures: textures.brick
-          }, scene, world);
-        }
-        else {
-          // seed += '0'
-          wallSeed += '0'
-        }
-        x += 5;
-      }
-      z +=5;
-    }
-  }
-  // console.log(wallSeed)
-  // convert wallSeed to base 36
-  // convert seed to base 36
-  const seedBase36 = parseInt(seed, 2).toString(36);
-  console.log("seed in base 36:", seedBase36);
-
-  const wallSeedBase36 = parseInt(wallSeed, 2).toString(36);
-  console.log( "wallseed in base 36:", wallSeedBase36);
-  // const hexSeed = parseInt(seed, 2).toString(36);
-  // console.log(hexSeed);
-
-  const zeroCount = (wallSeedBase36.match(/0+$/)||[])[0].length;
-  console.log("number of zeros at the end:",zeroCount)
-
-  const trimmedSeed = wallSeedBase36.slice(0, -zeroCount);
-  console.log("after removing zeros:",trimmedSeed);
-
-  const finalSeed = seedBase36 + ":" + trimmedSeed + ":" + zeroCount;
-  console.log(finalSeed);
-}
-
 async function init() {
   // initialization
   renderer.shadowMap.enabled = true;
@@ -178,6 +85,7 @@ async function init() {
   renderer.shadowMap.type = THREE.PCFShadowMap;
   // console.log(renderer.shadowMap)
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // mouse pointer
@@ -185,18 +93,31 @@ async function init() {
   mouse = new THREE.Vector2();
 
   // load camera
-  camera.render();
+  // camera.render();
+  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 1000 );
+  camera.position.y = 65;
 
   // orbit controls
-  // controls = new OrbitControls(camera.camera, renderer.domElement);
-  // controls.listenToKeyEvents(window); // optional
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.listenToKeyEvents(window); // optional
+  controls.minAzimuthAngle = - 0.05;
+  controls.maxAzimuthAngle = 0;
+  controls.minPolarAngle = 0;
+  controls.maxPolarAngle =  Math.PI * 0.125;
+  controls.minZoom = 100;
+  controls.maxZoom = 200;
 
   // lighting
   for (let key in lighting) {
     lighting[key].render();
   }
 
-  renderMaze(m);
+  // renderMaze(m);
+  mazeClass.render();
+  // console.log(sceneObjects.end.body.addEventListener('collide', function(e) {
+  //   console.log('collide');
+  // }));
+  addBall('ball',mazeClass.start);
 
   // renders all objects in scene
   for (let key in sceneObjects) {
@@ -294,15 +215,23 @@ async function init() {
   // event listeners
   // window.addEventListener("click", onClick);
   window.addEventListener("mousemove", onMouseMove, false);
-  window.addEventListener("wheel", (e) => setZoom(e, camera));
   window.addEventListener("keydown", (e) => {
     if(e.key === 'o') {
-      // remove all walls from scene
-      // for(let key in sceneObjects) {
-      //   if(sceneObjects[key].type === 'wall') {
-      //     delete sceneObjects[key];
-      //   }
-      // }
+      mazeClass.derender();
+      mazeClass = new Maze({
+        dimensions: { x: X, y: Y },
+        algoType: 'dfs',
+        start: { x: -40, z: -45 },
+        end: { x: 45, z: 40 },
+      }, scene, world);
+      mazeClass.render();
+      // rendering the walls of the new maze 
+      for (let key in sceneObjects) {
+        if (key.includes('wall')) {
+          sceneObjects[key].render();
+        }
+      }
+      GSAP.gsap.to(sceneObjects.ball.body.position, {x: mazeClass.start.x, z: mazeClass.start.z, duration: 1});      
     }
     else {
       setKey(e, true);
@@ -322,8 +251,8 @@ function resetFromHover() {
 }
 
 function getIntersects() {
-  raycaster.setFromCamera(mouse, camera.camera);
-  intersects = raycaster.intersectObjects(scene.children);
+  // raycaster.setFromCamera(mouse, camera.camera);
+  // intersects = raycaster.intersectObjects(scene.children);
 }
 
 function onHover() {
@@ -336,16 +265,12 @@ function onHover() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   onHover();
   stats.begin();
-  renderer.render(scene, camera.camera);
+  renderer.render(scene, camera);
   stats.end();
   resetFromHover();
   // controls.update();
-  if (player) {
-    camera.update(player.body);
-  }
   world.step(1 / 60);
 
   for (let key in sceneObjects) {
@@ -355,10 +280,9 @@ function animate() {
 }
 
 function onWindowResize() {
-  camera.camera.aspect = window.innerWidth / window.innerHeight;
-  camera.camera.updateProjectionMatrix();
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 init();
-animate();

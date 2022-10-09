@@ -23,6 +23,14 @@ class Box {
         this.angularDamping = props.angularDamping
         this.material = new CANNON.Material();
         this.textures = props.textures;
+        
+        this.body = new CANNON.Body({
+            mass: this.mass,
+            position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
+            linearDamping: this.linearDamping,
+            angularDamping: this.angularDamping,
+            material: this.material
+        });
     }
     render() {
         // three js rendering
@@ -42,13 +50,7 @@ class Box {
         this.scene.add(this.mesh);
 
         // cannon js rendering
-        this.body = new CANNON.Body({
-            mass: this.mass,
-            position: new CANNON.Vec3(this.position.x, this.position.y, this.position.z),
-            linearDamping: this.linearDamping,
-            angularDamping: this.angularDamping,
-            material: this.material
-        });
+
         // get dimensions of mesh
         const box = new THREE.Box3().setFromObject(this.mesh);
         // console.log(box);
@@ -60,18 +62,24 @@ class Box {
         // this.body.addShape(new CANNON.Sphere(this.dimension.x), new CANNON.Vec3(0, 1, 0));
         this.world.addBody(this.body);
     }
+    derender() {
+        this.scene.remove(this.mesh);
+        this.world.removeBody(this.body);
+    }
     update() {
-        if(this.type === 'player') {
-            for(let key in keyDict) {
-                if(keyDict[key].pressed) {
-                    this.body.velocity.x = -1*this.speed*keyDict[key].x;
-                    this.body.velocity.z = -1*this.speed*keyDict[key].z;
-                }
-            }
-        }
+        // if(this.type === 'player') {
+        //     // for(let key in keyDict) {
+        //     //     if(keyDict[key].pressed) {
+        //     //         this.body.velocity.x = -1*this.speed*keyDict[key].x;
+        //     //         this.body.velocity.z = -1*this.speed*keyDict[key].z;
+        //     //     }
+        //     // }
+        // }
         // threejs part copying cannon part
-        this.mesh.position.copy(this.body.position);
-        this.mesh.quaternion.copy(this.body.quaternion);
+        if(this.body) {
+            this.mesh.position.copy(this.body.position);
+            this.mesh.quaternion.copy(this.body.quaternion);
+        }
     }
     onHover() {
         this.mesh.material.color.setHex(this.hoverColor);

@@ -50,18 +50,25 @@ class Ball {
         this.body.addShape(new CANNON.Sphere(this.radius*2));
         this.world.addBody(this.body);
     }
+    derender() {
+        this.scene.remove(this.mesh);
+        this.world.removeBody(this.body);
+    }
     update() {
         if(this.type === 'player') {
             for(let key in keyDict) {
-                if(keyDict[key].pressed) {
+                if(keyDict[key].pressed && this.body) {
                     this.body.velocity.x = -1*this.speed*keyDict[key].x;
                     this.body.velocity.z = -1*this.speed*keyDict[key].z;
                 }
             }
         }
         // threejs part copying cannon part
-        this.mesh.position.copy(this.body.position);
-        this.mesh.quaternion.copy(this.body.quaternion);
+        if(this.body) {
+            this.mesh.position.copy(this.body.position);
+            this.mesh.quaternion.copy(this.body.quaternion);
+        }
+        
     }
     onHover() {
         this.mesh.material.color.setHex(this.hoverColor);

@@ -11,6 +11,9 @@ class ambientLight {
         this.light = new THREE.AmbientLight(this.color, this.intensity);
         this.scene.add(this.light);
     }
+    derender() {
+        this.scene.remove(this.light);
+    }
 }
 
 export { ambientLight };

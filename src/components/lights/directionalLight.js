@@ -15,6 +15,9 @@ class directionalLight {
         this.light.castShadow = this.shadow;
         this.scene.add(this.light);
     }
+    derender() {
+        this.scene.remove(this.light);
+    }
 }
 
 export { directionalLight };
